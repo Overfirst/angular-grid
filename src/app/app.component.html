@@ -17,6 +17,7 @@
       <input
         placeholder="Search in all columns..."
         kendoTextBox
+        (input)="onFilter($event)"
       />
       <kendo-grid-spacer></kendo-grid-spacer>
       <button kendoGridExcelCommand type="button" icon="file-excel">

@@ -22,7 +22,9 @@ export class AppComponent implements OnInit {
     this.gridView = this.gridData;
   }
 
-  public onFilter(inputValue: string): void {
+  public onFilter(event: any): void {
+    const inputValue: string = event.target.value;
+
     this.gridView = process(this.gridData, {
       filter: {
         logic: "or",
