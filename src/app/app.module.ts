@@ -6,11 +6,18 @@ import { AppComponent } from "./app.component";
 import { RatingComponent } from "./rating/rating.component";
 import { SharedModule } from "./shared/shared.module"
 
+import { UsersModule } from "./grid-models/users/users.module";
+import { ComputersModule } from "./grid-models/computers/computers.module";
+import { ApplicationsModule } from "./grid-models/applications/applications.module";
+
 @NgModule({
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
-    SharedModule
+    SharedModule,
+    UsersModule,
+    ComputersModule,
+    ApplicationsModule
   ],
   declarations: [
     AppComponent,
