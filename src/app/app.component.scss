@@ -1,0 +1,23 @@
+.nav_container {
+    display: flex;
+
+    a {
+        margin-right: 12px;
+        padding: 8px;
+        border: 1px solid rgb(97, 90, 76);
+        border-radius: 6px;
+        text-decoration: none;
+        text-transform: uppercase;
+        opacity: 0.6;
+        transform: all 0.2s;
+    }
+
+    a:hover {
+        opacity: 0.8;
+    }
+
+    .active {
+        color: rgb(32, 185, 246);
+        opacity: 1;
+    }
+}

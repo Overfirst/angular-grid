@@ -1,5 +1,10 @@
-
-    <kendo-grid
+<div class="nav_container">
+  <a routerLinkActive="active" routerLink="users">Users</a>
+  <a routerLinkActive="active" routerLink="computers">Computers</a>
+  <a routerLinkActive="active" routerLink="applications">Applications</a>
+</div>
+<router-outlet></router-outlet>
+<kendo-grid
     [kendoGridBinding]="gridView"
     kendoGridSelectBy="id"
     [selectedKeys]="mySelection"
@@ -25,6 +30,7 @@
       </button>
       <button kendoGridPDFCommand icon="file-pdf">Export to PDF</button>
     </ng-template>
+    
     <kendo-grid-checkbox-column
       [width]="45"
       [headerClass]="{ 'text-center': true }"
@@ -123,4 +129,4 @@
       [repeatHeaders]="true"
     ></kendo-grid-pdf>
     <kendo-grid-excel fileName="Employees.xlsx"></kendo-grid-excel>
-  </kendo-grid>
+</kendo-grid>
