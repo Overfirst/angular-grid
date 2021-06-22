@@ -1,7 +1,9 @@
 .nav_container {
     display: flex;
+    margin-bottom: 10px;
 
     a {
+        color: rgb(32, 185, 246);
         margin-right: 12px;
         padding: 8px;
         border: 1px solid rgb(97, 90, 76);
@@ -17,7 +19,7 @@
     }
 
     .active {
-        color: rgb(32, 185, 246);
+        color: rgb(17, 108, 255);
         opacity: 1;
     }
 }
