@@ -1,0 +1,34 @@
+<kendo-grid
+    [kendoGridBinding]="gridView"
+    kendoGridSelectBy="id"
+    [pageSize]="20"
+    [pageable]="true"
+    [sortable]="true"
+    [groupable]="true"
+    [reorderable]="true"
+    [resizable]="true"
+    [height]="810"
+    [columnMenu]="{ filter: true }"
+  >
+    <ng-template kendoGridToolbarTemplate>
+      <input
+        placeholder="Search in all columns..."
+        kendoTextBox
+        (input)="onFilter($event)"
+      />
+      <kendo-grid-spacer></kendo-grid-spacer>
+      <button kendoGridExcelCommand type="button" icon="file-excel">Export to Excel</button>
+      <button kendoGridPDFCommand icon="file-pdf">Export to PDF</button>
+    </ng-template>
+
+    <kendo-grid-column-group [title]="gridName" [columnMenu]="false">
+      <kendo-grid-column *ngFor="let key of itemKeys" [field]="key" [title]="upFirstLetter(key)" [width]="150">
+        <ng-template kendoGridCellTemplate let-item>
+          <div>{{ item[key] }}</div>
+        </ng-template>
+      </kendo-grid-column>
+    </kendo-grid-column-group>
+
+    <kendo-grid-pdf [fileName]="gridName + '.pdf'" [repeatHeaders]="true"></kendo-grid-pdf>
+    <kendo-grid-excel [fileName]="gridName + '.xlsx'"></kendo-grid-excel>
+</kendo-grid>

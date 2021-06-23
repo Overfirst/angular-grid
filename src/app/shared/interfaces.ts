@@ -27,3 +27,18 @@ export interface Column {
     template: string;
     dictionary: string[]
 }
+
+export interface GridFilterItem {
+    field: string;
+    operator: 'contains';
+    value?: string;
+}
+
+type GridFilterLogic = 'or' | 'and';
+
+export interface GridFilter {
+    filter: {
+        logic: GridFilterLogic;
+        filters: GridFilterItem[];
+    }
+}
