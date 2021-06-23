@@ -21,7 +21,7 @@ export interface Application {
     installDate: Date;    
 }
 
-export class Column {
+export interface Column {
     width: number;
     visibility: boolean;
     template: string;
