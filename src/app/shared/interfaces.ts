@@ -1,11 +1,11 @@
-export interface IUser {
+export interface User {
     name: string;
     surname: string;
     email: string;
     avatar: string;
 }
 
-export interface IComputer {
+export interface Computer {
     arch: string;
     name: string;
     os: string;
@@ -13,7 +13,7 @@ export interface IComputer {
     cpu: string;
 }
 
-export interface IApplication {
+export interface Application {
     name: string;
     arch: string;
     vendor: string;
@@ -21,7 +21,7 @@ export interface IApplication {
     installDate: Date;    
 }
 
-export class IColumn {
+export class Column {
     width: number;
     visibility: boolean;
     template: string;

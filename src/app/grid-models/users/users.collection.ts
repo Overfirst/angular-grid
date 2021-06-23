@@ -1,6 +1,6 @@
-import { IUser } from "src/app/shared/interfaces";
+import { User } from "src/app/shared/interfaces";
 
-export const users: IUser[] = [
+export const users: User[] = [
     {
         name: "Slater",
         surname: "Kelley",
