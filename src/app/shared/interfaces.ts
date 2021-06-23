@@ -9,7 +9,7 @@ export interface Computer {
     arch: string;
     name: string;
     os: string;
-    ram: number;
+    ram: string;
     cpu: string;
 }
 
