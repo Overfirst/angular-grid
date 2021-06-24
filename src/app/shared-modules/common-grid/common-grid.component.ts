@@ -22,6 +22,7 @@ export class CommonGridComponent implements OnInit {
   @Input() public groupable: boolean = true;
   @Input() public reorderable: boolean = true;
   @Input() public resizable: boolean = true;
+  @Input() public searchable: boolean = true;
 
   readonly defaultWidth: number = 300;
 

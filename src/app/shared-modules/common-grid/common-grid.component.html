@@ -12,11 +12,12 @@
   >
     <ng-template kendoGridToolbarTemplate>
       <input
+        *ngIf="searchable"
         placeholder="Search in all columns..."
         kendoTextBox
         (input)="onFilter($event)"
       />
-      <kendo-grid-spacer></kendo-grid-spacer>
+      <kendo-grid-spacer *ngIf="searchable"></kendo-grid-spacer>
       <button kendoGridExcelCommand type="button" icon="file-excel">Export to Excel</button>
       <button kendoGridPDFCommand icon="file-pdf">Export to PDF</button>
     </ng-template>
