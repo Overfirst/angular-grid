@@ -26,9 +26,10 @@
       <kendo-grid-column
         *ngFor="let key of itemKeys; index as idx"
         [field]="key"
-        [title]="upFirstLetter(key)"
         [autoSize]="false"
+        [title]="columnConfig[idx]?.title || key"
         [width]="columnConfig[idx]?.width || defaultWidth"
+        [hidden]="columnConfig[idx]?.hidden || false"
       >
         <ng-template kendoGridCellTemplate let-item>
           <div>{{ item[key] }}</div>

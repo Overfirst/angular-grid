@@ -22,9 +22,9 @@ export interface Application {
 }
 
 export interface Column {
-    title: string;
+    title?: string;
     width?: number;
-    visibility?: boolean;
+    hidden?: boolean;
     template?: string;
     dictionary?: string[]
 }

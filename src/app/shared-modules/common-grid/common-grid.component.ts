@@ -52,11 +52,6 @@ export class CommonGridComponent implements OnInit {
     })
   }
 
-  public upFirstLetter(key: string) {
-    const newKey = key[0].toUpperCase();
-    return key.length > 1 ? newKey + key.substring(1) : newKey;
-  }
-
   public onFilter(event: any): void {
     const inputValue: string = event.target.value;
 
