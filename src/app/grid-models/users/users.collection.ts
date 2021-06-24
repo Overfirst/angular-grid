@@ -1,6 +1,6 @@
 import { User } from "src/app/shared/interfaces";
 
-export const users: User[] = [
+export const USERS: User[] = [
     {
         name: "Slater",
         surname: "Kelley",
