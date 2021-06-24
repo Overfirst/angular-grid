@@ -1,5 +1,6 @@
 import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { USERS } from 'src/app/grid-models/users/users.collection'
+import { User } from 'src/app/shared/interfaces'
 
 @Component({
   selector: 'app-users',
@@ -7,5 +8,5 @@ import { USERS } from 'src/app/grid-models/users/users.collection'
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class UsersComponent {
-  public users: any[] = USERS;
+  public users: User[] = USERS;
 }
