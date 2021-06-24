@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild, ChangeDetectionStrategy, Input } from '@angular/core';
 import { DataBindingDirective } from '@progress/kendo-angular-grid';
 import { process } from '@progress/kendo-data-query';
-import { GridFilter, GridFilterItem } from 'src/app/shared/interfaces';
+import { Column, GridFilter, GridFilterItem } from 'src/app/shared/interfaces';
 
 @Component({
   selector: 'app-common-grid',
@@ -11,11 +11,22 @@ import { GridFilter, GridFilterItem } from 'src/app/shared/interfaces';
 export class CommonGridComponent implements OnInit {
   @ViewChild(DataBindingDirective) dataBinding: DataBindingDirective;
 
-  @Input() public gridName: string;
-  @Input() public gridData: any[];
+  @Input() public gridData: any[] = [];
+  @Input() public columnConfig: Column[] = [];
 
-  public itemKeys: string[];
-  public gridView: any[];
+  @Input() public gridName: string = 'Unnamed';
+  @Input() public gridHeight: number = 900;
+  @Input() public pageSize: number = 20;
+  @Input() public sortable: boolean = true;
+  @Input() public pageable: boolean = true;
+  @Input() public groupable: boolean = true;
+  @Input() public reorderable: boolean = true;
+  @Input() public resizable: boolean = true;
+
+  readonly defaultWidth: number = 300;
+
+  public itemKeys: string[] = [];
+  public gridView: any[] = [];
 
   private filterTemplate: GridFilter;
 

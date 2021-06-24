@@ -1,13 +1,13 @@
 <kendo-grid
     [kendoGridBinding]="gridView"
     kendoGridSelectBy="id"
-    [pageSize]="20"
-    [pageable]="true"
-    [sortable]="true"
-    [groupable]="true"
-    [reorderable]="true"
-    [resizable]="true"
-    [height]="810"
+    [pageSize]="pageSize"
+    [pageable]="pageable"
+    [sortable]="sortable"
+    [groupable]="groupable"
+    [reorderable]="reorderable"
+    [resizable]="resizable"
+    [height]="gridHeight"
     [columnMenu]="{ filter: true }"
   >
     <ng-template kendoGridToolbarTemplate>
@@ -22,7 +22,13 @@
     </ng-template>
 
     <kendo-grid-column-group [title]="gridName" [columnMenu]="false">
-      <kendo-grid-column *ngFor="let key of itemKeys" [field]="key" [title]="upFirstLetter(key)" [width]="150">
+      <kendo-grid-column
+        *ngFor="let key of itemKeys; index as idx"
+        [field]="key"
+        [title]="upFirstLetter(key)"
+        [autoSize]="false"
+        [width]="columnConfig[idx]?.width || defaultWidth"
+      >
         <ng-template kendoGridCellTemplate let-item>
           <div>{{ item[key] }}</div>
         </ng-template>

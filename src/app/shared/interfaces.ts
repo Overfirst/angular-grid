@@ -22,10 +22,11 @@ export interface Application {
 }
 
 export interface Column {
-    width: number;
-    visibility: boolean;
-    template: string;
-    dictionary: string[]
+    title: string;
+    width?: number;
+    visibility?: boolean;
+    template?: string;
+    dictionary?: string[]
 }
 
 export interface GridFilterItem {
