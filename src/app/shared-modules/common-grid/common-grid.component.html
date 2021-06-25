@@ -35,6 +35,7 @@
           <div [ngSwitch]="columnConfig[idx]?.type">
             <div *ngSwitchCase="'list'">{{ item[key].join(', ') }}</div>
             <div *ngSwitchCase="'date'">{{ item[key] | date:'short' }}</div>
+            <div *ngSwitchCase="'boolean'">{{ item[key] ? 'TRUE' : 'FALSE' }}</div>
             <div *ngSwitchDefault>{{ item[key] }}</div>
           </div>
         </ng-template>

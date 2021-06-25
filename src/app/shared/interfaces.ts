@@ -25,7 +25,7 @@ export interface GridColumn {
     title?: string;
     width?: number;
     hidden?: boolean;
-    type?: 'text' | 'boolean' | 'date'
+    type?: 'text' | 'boolean' | 'list' | 'date'
 }
 
 export interface GridFilterItem {
