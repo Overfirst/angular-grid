@@ -21,12 +21,11 @@ export interface Application {
     installDate: Date;    
 }
 
-export interface Column {
+export interface GridColumn {
     title?: string;
     width?: number;
     hidden?: boolean;
-    template?: string;
-    dictionary?: string[]
+    type?: 'text' | 'boolean' | 'date'
 }
 
 export interface GridFilterItem {

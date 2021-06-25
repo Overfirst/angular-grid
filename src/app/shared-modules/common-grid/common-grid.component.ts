@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild, ChangeDetectionStrategy, Input } from '@angular/core';
 import { DataBindingDirective } from '@progress/kendo-angular-grid';
 import { process } from '@progress/kendo-data-query';
-import { Column, GridFilter, GridFilterItem } from 'src/app/shared/interfaces';
+import { GridColumn, GridFilter, GridFilterItem } from 'src/app/shared/interfaces';
 
 @Component({
   selector: 'app-common-grid',
@@ -12,7 +12,7 @@ export class CommonGridComponent implements OnInit {
   @ViewChild(DataBindingDirective) dataBinding: DataBindingDirective;
 
   @Input() public gridData: any[] = [];
-  @Input() public columnConfig: Column[] = [];
+  @Input() public columnConfig: GridColumn[] = [];
 
   @Input() public gridName: string = 'Unnamed';
   @Input() public gridHeight: number = 900;
@@ -58,5 +58,10 @@ export class CommonGridComponent implements OnInit {
     this.filterTemplate.filter.filters.forEach(filter => filter.value = inputValue);
     this.gridView = process(this.gridData, this.filterTemplate).data;
     this.dataBinding.skip = 0;
+  }
+
+  public paramFromConfig<T>(idx: number, param: string, defaultValue: T): T {
+    const configItem: any = this.columnConfig[idx];
+    return configItem && configItem[param] || defaultValue;
   }
 }

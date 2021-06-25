@@ -27,12 +27,16 @@
         *ngFor="let key of itemKeys; index as idx"
         [field]="key"
         [autoSize]="false"
-        [title]="columnConfig[idx]?.title || key"
-        [width]="columnConfig[idx]?.width || defaultWidth"
-        [hidden]="columnConfig[idx]?.hidden || false"
+        [title]="paramFromConfig(idx, 'title', key)"
+        [width]="paramFromConfig(idx, 'width', defaultWidth)"
+        [hidden]="paramFromConfig(idx, 'hidden', false)"
       >
         <ng-template kendoGridCellTemplate let-item>
-          <div>{{ item[key] }}</div>
+          <div [ngSwitch]="columnConfig[idx]?.type">
+            <div *ngSwitchCase="'list'">{{ item[key].join(', ') }}</div>
+            <div *ngSwitchCase="'date'">{{ item[key] | date:'short' }}</div>
+            <div *ngSwitchDefault>{{ item[key] }}</div>
+          </div>
         </ng-template>
       </kendo-grid-column>
     </kendo-grid-column-group>
