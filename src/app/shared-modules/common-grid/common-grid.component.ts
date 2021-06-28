@@ -1,18 +1,22 @@
-import { Component, OnInit, ViewChild, ChangeDetectionStrategy, Input } from '@angular/core';
+import { Component, ViewChild, ChangeDetectionStrategy, Input } from '@angular/core';
 import { DataBindingDirective } from '@progress/kendo-angular-grid';
 import { process } from '@progress/kendo-data-query';
-import { GridColumn, GridFilter, GridFilterItem } from 'src/app/shared/interfaces';
+import { DataGroup, GridColumn, GridFilter, GridFilterItem } from 'src/app/shared/interfaces';
 
 @Component({
   selector: 'app-common-grid',
   templateUrl: './common-grid.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class CommonGridComponent implements OnInit {
+export class CommonGridComponent {
   @ViewChild(DataBindingDirective) dataBinding: DataBindingDirective;
 
-  @Input() public gridData: any[] = [];
-  @Input() public columnConfig: GridColumn[] = [];
+  public gridView: any[] = [];
+  public gridData: any[] = [];
+  public columnConfig: GridColumn[] = [];
+  public _loading = false;
+
+  private filterTemplate: GridFilter;
 
   @Input() public gridHeight = 900;
   @Input() public pageSize = 20;
@@ -23,14 +27,18 @@ export class CommonGridComponent implements OnInit {
   @Input() public resizable = true;
   @Input() public searchable = true;
 
-  public itemKeys: string[] = [];
-  public gridView: any[] = [];
+  @Input() public set loading(isLoading: boolean | null) {
+    this._loading = isLoading !== null ? isLoading : false;
+  }
 
-  private filterTemplate: GridFilter;
+  @Input() public set allData(dataGroup: DataGroup | null) {
+    if (!dataGroup) {
+      return;
+    }
 
-  public ngOnInit(): void {
+    this.gridData = dataGroup.data;
+    this.columnConfig = dataGroup.columnConfig;
     this.gridView = this.gridData;
-    this.itemKeys = Object.keys(this.gridData[0]);
 
     this.filterTemplate = {
       filter: {
@@ -39,12 +47,12 @@ export class CommonGridComponent implements OnInit {
       },
     };
 
-    this.itemKeys.forEach(key => {
+    this.columnConfig.map(column => column.alias).forEach(alias => {
       const item: GridFilterItem = {
-        field: key,
+        field: alias,
         operator: 'contains'
       };
-
+    
       this.filterTemplate.filter.filters.push(item);
     })
   }
@@ -55,11 +63,6 @@ export class CommonGridComponent implements OnInit {
     this.filterTemplate.filter.filters.forEach(filter => filter.value = inputValue);
     this.gridView = process(this.gridData, this.filterTemplate).data;
     this.dataBinding.skip = 0;
-  }
-
-  public paramFromConfig<T>(idx: number, param: string, defaultValue: T): T {
-    const configItem: any = this.columnConfig[idx];
-    return configItem && configItem[param] || defaultValue;
   }
 
   public resolveDefault<T>(value: T | undefined, defaultValue: T): T {

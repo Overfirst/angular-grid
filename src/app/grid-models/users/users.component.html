@@ -1,9 +1,8 @@
 <app-common-grid
-    gridName="Users"
-    [gridData]="users"
-    [columnConfig]="columnConfig"
-    [gridHeight]="800"
-    [pageSize]="30"
-    [resizable]="false"
-    [reorderable]="false"
+  [allData]="data$ | async"
+  [gridHeight]="800"
+  [pageSize]="30"
+  [resizable]="false"
+  [reorderable]="false"
+  [loading]="(loading$ | async) || false"
 ></app-common-grid>

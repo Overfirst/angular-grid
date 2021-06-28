@@ -9,6 +9,7 @@
     [resizable]="resizable"
     [height]="gridHeight"
     [columnMenu]="{ filter: true }"
+    [loading]="_loading"
   >
     <ng-template kendoGridToolbarTemplate *ngIf="searchable">
       <input
