@@ -43,8 +43,3 @@ export interface GridFilter {
         filters: GridFilterItem[];
     }
 }
-
-export interface DataGroup {
-    data: any[],
-    columnConfig: GridColumn[]
-}

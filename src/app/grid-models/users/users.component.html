@@ -1,5 +1,7 @@
 <app-common-grid
-  [allData]="data$ | async"
+  [total]="total"
+  [columnConfig]="columnConfig"
+  [data]="data$ | async"
   [gridHeight]="540"
   [pageSize]="10"
   [pageable]="{
@@ -12,4 +14,5 @@
   [resizable]="false"
   [reorderable]="false"
   [loading]="loading$ | async"
+  (pageChanged)="pageChanged($event)"
 ></app-common-grid>

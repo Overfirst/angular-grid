@@ -1,7 +1,6 @@
 <kendo-grid
-    [kendoGridBinding]="gridView"
+    [data]="gridData"
     kendoGridSelectBy="id"
-    [pageSize]="pageSize"
     [pageable]="pageable"
     [sortable]="sortable"
     [groupable]="groupable"
@@ -10,6 +9,10 @@
     [height]="gridHeight"
     [columnMenu]="{ filter: true }"
     [loading]="_loading"
+    [skip]="resolveDefault(state.skip, 0)"
+    [pageSize]="resolveDefault(state.take, 5)"
+
+    (pageChange)="pageChange($event)"
   >
     <ng-template kendoGridToolbarTemplate *ngIf="searchable">
       <input
@@ -20,7 +23,7 @@
     </ng-template>
 
     <kendo-grid-column
-      *ngFor="let column of columnConfig"
+      *ngFor="let column of _columnConfig"
       [field]="column.alias"
       [autoSize]="false"
       [title]="resolveDefault(column.title, column.alias)"
