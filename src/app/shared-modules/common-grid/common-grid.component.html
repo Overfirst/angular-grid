@@ -14,14 +14,6 @@
 
     (pageChange)="pageChange($event)"
   >
-    <ng-template kendoGridToolbarTemplate *ngIf="searchable">
-      <input
-        placeholder="Search in all columns..."
-        kendoTextBox
-        (input)="onFilter($event)"
-      />
-    </ng-template>
-
     <kendo-grid-column
       *ngFor="let column of _columnConfig"
       [field]="column.alias"

@@ -12,14 +12,14 @@ import { State } from "@progress/kendo-data-query";
 export class CommonGridComponent {
   public gridData: GridDataResult;
   public _loading = false;
-
-  private filterTemplate: GridFilter;
   public _columnConfig: GridColumn[] = [];
 
   public state: State = {
     skip: 0,
     take: 5,
-  } 
+  }
+
+  private filterTemplate: GridFilter;
 
   @Input() public total = 0;
   @Input() public gridHeight = 900;
@@ -64,13 +64,6 @@ export class CommonGridComponent {
   }
 
   @Output() pageChanged = new EventEmitter<PageChangeEvent>();
-
-  public onFilter(event: any): void {
-    // const inputValue: string = event.target.value;
-
-    // this.filterTemplate.filter.filters.forEach(filter => filter.value = inputValue);
-    // this.gridData.data = process(this.gridData.data, this.filterTemplate).data;
-  }
 
   public resolveDefault<T>(value: T | undefined, defaultValue: T): T {
     if (value === undefined) {
