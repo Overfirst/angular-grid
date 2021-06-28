@@ -10,7 +10,6 @@ import { State } from "@progress/kendo-data-query";
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CommonGridComponent {
-  public gridView: any[];
   public gridData: GridDataResult;
   public _loading = false;
 
@@ -21,6 +20,16 @@ export class CommonGridComponent {
     skip: 0,
     take: 5,
   } 
+
+  @Input() public total = 0;
+  @Input() public gridHeight = 900;
+  @Input() public pageSize = 20;
+  @Input() public sortable = true;
+  @Input() public pageable: boolean | PagerSettings = true;
+  @Input() public groupable = true;
+  @Input() public reorderable = true;
+  @Input() public resizable = true;
+  @Input() public searchable = true;
 
   @Input() public set columnConfig(config: GridColumn[]) {
     if (config) {
@@ -44,37 +53,23 @@ export class CommonGridComponent {
     }
   } 
 
-  @Input() public gridHeight = 900;
-  @Input() public pageSize = 20;
-  @Input() public sortable = true;
-  @Input() public pageable: boolean | PagerSettings = true;
-  @Input() public groupable = true;
-  @Input() public reorderable = true;
-  @Input() public resizable = true;
-  @Input() public searchable = true;
-
-  @Output() pageChanged = new EventEmitter<PageChangeEvent>();
-
   @Input() public set loading(isLoading: boolean | null) {
     this._loading = isLoading !== null ? isLoading : false;
   }
 
-  @Input() public total = 0;
-
   @Input() public set data(newData: any[] | null) {
-    if (!newData) {
-      return;
+    if (newData) {
+      this.gridData = { data: newData, total: this.total };
     }
-
-    this.gridData = { data: newData, total: this.total };
-    // this.gridView = this.gridData.data;
   }
+
+  @Output() pageChanged = new EventEmitter<PageChangeEvent>();
 
   public onFilter(event: any): void {
     // const inputValue: string = event.target.value;
 
     // this.filterTemplate.filter.filters.forEach(filter => filter.value = inputValue);
-    // this.gridView = process(this.gridData.data, this.filterTemplate).data;
+    // this.gridData.data = process(this.gridData.data, this.filterTemplate).data;
   }
 
   public resolveDefault<T>(value: T | undefined, defaultValue: T): T {
