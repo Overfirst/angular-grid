@@ -22,6 +22,7 @@ export interface Application {
 }
 
 export interface GridColumn {
+    alias: string;
     title?: string;
     width?: number;
     hidden?: boolean;

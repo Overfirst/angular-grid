@@ -10,9 +10,9 @@ import { User, GridColumn } from 'src/app/shared/interfaces'
 export class UsersComponent {
   public users: User[] = USERS;
   public columnConfig: GridColumn[] = [
-    { title: "Name", width: 300 },
-    { title: "Surname", width: 300 },
-    { title: "Email", width: 600 },
-    { title: "Avatar", hidden: true },
+    { alias: 'name', title: "Name", width: 300 },
+    { alias: 'surname', title: "Surname", width: 300 },
+    { alias: 'email', title: "Email", width: 600 },
+    { alias: 'avatar', title: "Avatar", hidden: true },
   ];
 }

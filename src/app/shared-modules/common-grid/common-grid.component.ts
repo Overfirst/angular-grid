@@ -14,17 +14,14 @@ export class CommonGridComponent implements OnInit {
   @Input() public gridData: any[] = [];
   @Input() public columnConfig: GridColumn[] = [];
 
-  @Input() public gridName: string = 'Unnamed';
-  @Input() public gridHeight: number = 900;
-  @Input() public pageSize: number = 20;
-  @Input() public sortable: boolean = true;
-  @Input() public pageable: boolean = true;
-  @Input() public groupable: boolean = true;
-  @Input() public reorderable: boolean = true;
-  @Input() public resizable: boolean = true;
-  @Input() public searchable: boolean = true;
-
-  readonly defaultWidth: number = 300;
+  @Input() public gridHeight = 900;
+  @Input() public pageSize = 20;
+  @Input() public sortable = true;
+  @Input() public pageable = true;
+  @Input() public groupable = true;
+  @Input() public reorderable = true;
+  @Input() public resizable = true;
+  @Input() public searchable = true;
 
   public itemKeys: string[] = [];
   public gridView: any[] = [];
@@ -63,5 +60,13 @@ export class CommonGridComponent implements OnInit {
   public paramFromConfig<T>(idx: number, param: string, defaultValue: T): T {
     const configItem: any = this.columnConfig[idx];
     return configItem && configItem[param] || defaultValue;
+  }
+
+  public resolveDefault<T>(value: T | undefined, defaultValue: T): T {
+    if (value === undefined) {
+      return defaultValue;
+    }
+
+    return value;
   }
 }

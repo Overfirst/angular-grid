@@ -10,38 +10,29 @@
     [height]="gridHeight"
     [columnMenu]="{ filter: true }"
   >
-    <ng-template kendoGridToolbarTemplate>
+    <ng-template kendoGridToolbarTemplate *ngIf="searchable">
       <input
-        *ngIf="searchable"
         placeholder="Search in all columns..."
         kendoTextBox
         (input)="onFilter($event)"
       />
-      <kendo-grid-spacer *ngIf="searchable"></kendo-grid-spacer>
-      <button kendoGridExcelCommand type="button" icon="file-excel">Export to Excel</button>
-      <button kendoGridPDFCommand icon="file-pdf">Export to PDF</button>
     </ng-template>
 
-    <kendo-grid-column-group [title]="gridName" [columnMenu]="false">
-      <kendo-grid-column
-        *ngFor="let key of itemKeys; index as idx"
-        [field]="key"
-        [autoSize]="false"
-        [title]="paramFromConfig(idx, 'title', key)"
-        [width]="paramFromConfig(idx, 'width', defaultWidth)"
-        [hidden]="paramFromConfig(idx, 'hidden', false)"
-      >
-        <ng-template kendoGridCellTemplate let-item>
-          <div [ngSwitch]="columnConfig[idx]?.type">
-            <div *ngSwitchCase="'list'">{{ item[key]?.join(', ') }}</div>
-            <div *ngSwitchCase="'date'">{{ item[key] | date:'short' }}</div>
-            <div *ngSwitchCase="'boolean'">{{ item[key] ? 'TRUE' : 'FALSE' }}</div>
-            <div *ngSwitchDefault>{{ item[key] }}</div>
-          </div>
-        </ng-template>
-      </kendo-grid-column>
-    </kendo-grid-column-group>
-
-    <kendo-grid-pdf [fileName]="gridName + '.pdf'" [repeatHeaders]="true"></kendo-grid-pdf>
-    <kendo-grid-excel [fileName]="gridName + '.xlsx'"></kendo-grid-excel>
+    <kendo-grid-column
+      *ngFor="let column of columnConfig"
+      [field]="column.alias"
+      [autoSize]="false"
+      [title]="resolveDefault(column.title, column.alias)"
+      [width]="resolveDefault(column.width, 300)"
+      [hidden]="resolveDefault(column.hidden, false)"
+    >
+      <ng-template kendoGridCellTemplate let-item>
+        <div [ngSwitch]="item[column.alias].type">
+          <div *ngSwitchCase="'list'">{{ item[column.alias]?.join(', ') }}</div>
+          <div *ngSwitchCase="'date'">{{ item[column.alias] | date:'short' }}</div>
+          <div *ngSwitchCase="'boolean'">{{ item[column.alias] ? 'TRUE' : 'FALSE' }}</div>
+          <div *ngSwitchDefault>{{ item[column.alias] }}</div>
+        </div>
+      </ng-template>
+    </kendo-grid-column>
 </kendo-grid>
