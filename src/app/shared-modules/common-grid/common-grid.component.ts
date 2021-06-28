@@ -1,5 +1,5 @@
 import { Component, ViewChild, ChangeDetectionStrategy, Input } from '@angular/core';
-import { DataBindingDirective } from '@progress/kendo-angular-grid';
+import { DataBindingDirective, PagerSettings } from '@progress/kendo-angular-grid';
 import { process } from '@progress/kendo-data-query';
 import { DataGroup, GridColumn, GridFilter, GridFilterItem } from 'src/app/shared/interfaces';
 
@@ -21,7 +21,7 @@ export class CommonGridComponent {
   @Input() public gridHeight = 900;
   @Input() public pageSize = 20;
   @Input() public sortable = true;
-  @Input() public pageable = true;
+  @Input() public pageable: boolean | PagerSettings = true;
   @Input() public groupable = true;
   @Input() public reorderable = true;
   @Input() public resizable = true;

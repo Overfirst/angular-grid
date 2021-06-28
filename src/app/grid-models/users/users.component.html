@@ -1,7 +1,14 @@
 <app-common-grid
   [allData]="data$ | async"
-  [gridHeight]="800"
-  [pageSize]="30"
+  [gridHeight]="540"
+  [pageSize]="10"
+  [pageable]="{
+    buttonCount: 5,
+    info: true,
+    type: 'numeric',
+    pageSizes: [5, 10, 50, 100],
+    previousNext: true
+  }"
   [resizable]="false"
   [reorderable]="false"
   [loading]="loading$ | async"
