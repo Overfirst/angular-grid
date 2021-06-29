@@ -1,7 +1,6 @@
 <app-common-table
-  [total]="total"
   [columnConfig]="columnConfig"
-  [data]="data$ | async"
+  [data]="currentData$ | async"
   [gridHeight]="540"
   [pageSize]="5"
   [pageable]="{

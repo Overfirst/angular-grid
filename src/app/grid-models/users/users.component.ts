@@ -1,9 +1,10 @@
 import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { PageChangeEvent } from '@progress/kendo-angular-grid';
 import { BehaviorSubject, Observable, of } from 'rxjs';
-import { tap, delay, finalize } from 'rxjs/operators';
-import { USERS } from 'src/app/grid-models/users/users.collection'
-import { User, GridColumn } from 'src/app/shared/interfaces'
+import { finalize } from 'rxjs/operators';
+import { GridColumn } from 'src/app/shared/interfaces'
+import { UsersService } from './users.service';
+import { GridDataResult } from '@progress/kendo-angular-grid';
 
 @Component({
   selector: 'app-users',
@@ -11,8 +12,6 @@ import { User, GridColumn } from 'src/app/shared/interfaces'
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class UsersComponent {
-  public users: User[] = USERS;
-  
   public columnConfig: GridColumn[] = [
     { alias: 'name', title: "Name", width: 300 },
     { alias: 'surname', title: "Surname", width: 300 },
@@ -21,31 +20,17 @@ export class UsersComponent {
   ];
 
   public loading$ = new BehaviorSubject<boolean>(false);
-  public total = USERS.length;
+  public currentData$ = this.takeUsers(0, 5);
 
-  public data$ = this.takeUsers(0, 10);
+  constructor(private service: UsersService) {}
 
   public pageChanged(state: PageChangeEvent): void {
-    this.data$ = this.takeUsers(state.skip, state.take);
-    console.log(state);
+    this.currentData$ = this.takeUsers(state.skip, state.take);
   }
 
-  public takeUsers(from: number, to: number): Observable<User[]> {
-    const takenUsers = [];
-
-    let maxCount = from + to;
-
-    if (maxCount > this.total) {
-      maxCount = this.total;
-    }
-
-    for (let i = from; i < maxCount; i++) {
-      takenUsers.push(USERS[i]);
-    }
-
-    return of(takenUsers).pipe(
-      tap(() => this.loading$.next(true)),
-      delay(1500),
+  public takeUsers(from: number, to: number): Observable<GridDataResult> {
+    this.loading$.next(true);
+    return this.service.getUsers(from, to).pipe(
       finalize(() => this.loading$.next(false))
     );
   }

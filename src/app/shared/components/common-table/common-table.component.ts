@@ -18,8 +18,7 @@ export class CommonTableComponent implements AfterViewInit {
     skip: 0,
     take: 5,
   }
-
-  @Input() public total = 0;
+  
   @Input() public gridHeight = 900;
   @Input() public pageSize = 20;
   @Input() public sortable = true;
@@ -42,9 +41,9 @@ export class CommonTableComponent implements AfterViewInit {
 
   public gridData: GridDataResult = {data: [], total: 0};
 
-  @Input() public set data(newData: any[] | null) {
+  @Input() public set data(newData: GridDataResult | null) {
     if (newData) {
-      this.gridData = { data: newData, total: this.total };
+      this.gridData = newData;
     }
   }
 
