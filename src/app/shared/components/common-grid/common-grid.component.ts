@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter } from '@angular/core';
+import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter, AfterViewInit } from '@angular/core';
 import { GridDataResult, PageChangeEvent, PagerSettings } from '@progress/kendo-angular-grid';
 import { GridColumn, GridFilter, GridFilterItem } from 'src/app/shared/interfaces';
 import { State } from "@progress/kendo-data-query";
@@ -8,7 +8,7 @@ import { State } from "@progress/kendo-data-query";
   templateUrl: './common-grid.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class CommonGridComponent {
+export class CommonGridComponent implements AfterViewInit {
   public gridData: GridDataResult;
   public _loading = false;
   public _columnConfig: GridColumn[] = [];
@@ -48,7 +48,7 @@ export class CommonGridComponent {
         };
       
         this.filterTemplate.filter.filters.push(item);
-      })
+      });
     }
   } 
 
@@ -70,6 +70,10 @@ export class CommonGridComponent {
     }
 
     return value;
+  }
+
+  ngAfterViewInit() {
+    console.log(this._columnConfig);
   }
 
   public pageChange(state: PageChangeEvent): void {

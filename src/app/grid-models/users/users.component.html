@@ -1,9 +1,9 @@
-<app-common-grid
+<app-common-table
   [total]="total"
   [columnConfig]="columnConfig"
   [data]="data$ | async"
   [gridHeight]="540"
-  [pageSize]="10"
+  [pageSize]="5"
   [pageable]="{
     buttonCount: 5,
     info: true,
@@ -15,4 +15,4 @@
   [reorderable]="false"
   [loading]="loading$ | async"
   (pageChanged)="pageChanged($event)"
-></app-common-grid>
+></app-common-table>

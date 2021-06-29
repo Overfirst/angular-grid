@@ -26,7 +26,8 @@ export interface GridColumn {
     title?: string;
     width?: number;
     hidden?: boolean;
-    type?: 'text' | 'boolean' | 'list' | 'date'
+    type?: 'text' | 'boolean' | 'list' | 'date',
+    template?: any
 }
 
 export interface GridFilterItem {

@@ -1,1 +1,34 @@
-<p>common-table works!</p>
+<app-common-grid
+  [total]="total"
+  [columnConfig]="_columnConfig"
+  [data]="gridData.data"
+  [gridHeight]="540"
+  [pageSize]="5"
+  [pageable]="{
+    buttonCount: 5,
+    info: true,
+    type: 'numeric',
+    pageSizes: [5, 10, 50, 100],
+    previousNext: true
+  }"
+  [resizable]="false"
+  [reorderable]="false"
+  [loading]="_loading"
+  (pageChanged)="pageChange($event)"
+></app-common-grid>
+
+<ng-template #textTemplate let-element="item">
+    {{ element }}
+</ng-template>
+
+<ng-template #booleanTemplate let-element="item">
+    {{ element ? 'TRUE' : 'FALSE' }}
+</ng-template>
+
+<ng-template #dateTemplate let-element="item">
+    {{ element | date:'short' }}
+</ng-template>
+
+<ng-template #listTemplate let-element="item">
+    {{ element.join(', ') }}
+</ng-template>

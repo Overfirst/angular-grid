@@ -11,7 +11,6 @@
     [loading]="_loading"
     [skip]="resolveDefault(state.skip, 0)"
     [pageSize]="resolveDefault(state.take, 5)"
-
     (pageChange)="pageChange($event)"
   >
     <kendo-grid-column
@@ -23,12 +22,7 @@
       [hidden]="resolveDefault(column.hidden, false)"
     >
       <ng-template kendoGridCellTemplate let-item>
-        <div [ngSwitch]="item[column.alias].type">
-          <div *ngSwitchCase="'list'">{{ item[column.alias]?.join(', ') }}</div>
-          <div *ngSwitchCase="'date'">{{ item[column.alias] | date:'short' }}</div>
-          <div *ngSwitchCase="'boolean'">{{ item[column.alias] ? 'TRUE' : 'FALSE' }}</div>
-          <div *ngSwitchDefault>{{ item[column.alias] }}</div>
-        </div>
+        <ng-container *ngTemplateOutlet="column.template; context: {item: item[column.alias]}"></ng-container>
       </ng-template>
     </kendo-grid-column>
 </kendo-grid>
