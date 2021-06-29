@@ -2,6 +2,7 @@ import { Component, ChangeDetectionStrategy, ViewChild, ElementRef, Input, Outpu
 import { GridDataResult, PageChangeEvent, PagerSettings } from '@progress/kendo-angular-grid';
 import { GridColumn } from '../../interfaces';
 import { State } from "@progress/kendo-data-query";
+import { TemplateRef } from '@angular/core';
 
 @Component({
   selector: 'app-common-table',
@@ -9,10 +10,10 @@ import { State } from "@progress/kendo-data-query";
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CommonTableComponent implements AfterViewInit {
-  @ViewChild('textTemplate') public textTemplate: ElementRef;
-  @ViewChild('booleanTemplate') public booleanTemplate: ElementRef;
-  @ViewChild('dateTemplate') public dateTemplate: ElementRef;
-  @ViewChild('listTemplate') public listTemplate: ElementRef;
+  @ViewChild('textTemplate') public textTemplate: TemplateRef<HTMLElement>;
+  @ViewChild('booleanTemplate') public booleanTemplate: TemplateRef<HTMLElement>;
+  @ViewChild('dateTemplate') public dateTemplate: TemplateRef<HTMLElement>;
+  @ViewChild('listTemplate') public listTemplate: TemplateRef<HTMLElement>;
 
   public state: State = {
     skip: 0,

@@ -1,3 +1,5 @@
+import { TemplateRef } from "@angular/core";
+
 export interface User {
     name: string;
     surname: string;
@@ -27,7 +29,7 @@ export interface GridColumn {
     width?: number;
     hidden?: boolean;
     type?: 'text' | 'boolean' | 'list' | 'date',
-    template?: any
+    template?: TemplateRef<HTMLElement>
 }
 
 export interface GridFilterItem {
