@@ -1,6 +1,5 @@
-import { Component, ViewChild, ChangeDetectionStrategy, Input, Output, EventEmitter } from '@angular/core';
-import { DataBindingDirective, GridDataResult, PageChangeEvent, PagerSettings } from '@progress/kendo-angular-grid';
-import { process } from '@progress/kendo-data-query';
+import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter } from '@angular/core';
+import { GridDataResult, PageChangeEvent, PagerSettings } from '@progress/kendo-angular-grid';
 import { GridColumn, GridFilter, GridFilterItem } from 'src/app/shared/interfaces';
 import { State } from "@progress/kendo-data-query";
 
