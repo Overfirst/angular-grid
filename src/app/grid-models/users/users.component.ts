@@ -1,7 +1,7 @@
 import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { PageChangeEvent } from '@progress/kendo-angular-grid';
 import { BehaviorSubject, Observable, of } from 'rxjs';
-import { tap, delay, finalize, take } from 'rxjs/operators';
+import { tap, delay, finalize } from 'rxjs/operators';
 import { USERS } from 'src/app/grid-models/users/users.collection'
 import { User, GridColumn } from 'src/app/shared/interfaces'
 
