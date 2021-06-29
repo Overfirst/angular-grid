@@ -4,12 +4,12 @@ import { Observable } from "rxjs";
 import { GetDataService } from "../get-data.service";
 
 @Injectable({providedIn: 'root'})
-export class UsersService {
-    private readonly URL = 'https://run.mocky.io/v3/a0d548da-3021-45d1-bcb1-4b84b11b68d5';
+export class ComputersService {
+    private readonly URL = 'https://run.mocky.io/v3/082ab2d3-5dd0-48f8-b448-73497de7264e';
 
     constructor(private getDataService: GetDataService) {}
 
-    public getUsers(from: number, to: number): Observable<GridDataResult> {
+    public getComputers(from: number, to: number): Observable<GridDataResult> {
         return this.getDataService.get(this.URL, from, to);
     }
 }
