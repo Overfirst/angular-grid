@@ -21,7 +21,6 @@ export class ProductsService {
                     data: response['value'],
                     total: +response['@odata.count']
                 };
-                console.log(result);
                 
                 return result;
             })
