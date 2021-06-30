@@ -1,5 +1,5 @@
 import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter } from '@angular/core';
-import { GridDataResult, PageChangeEvent, PagerSettings } from '@progress/kendo-angular-grid';
+import { GridDataResult, PagerSettings } from '@progress/kendo-angular-grid';
 import { GridColumn, GridFilter, GridFilterItem } from 'src/app/shared/interfaces';
 import { State } from "@progress/kendo-data-query";
 
@@ -62,7 +62,7 @@ export class CommonGridComponent {
     }
   }
 
-  @Output() pageChanged = new EventEmitter<PageChangeEvent>();
+  @Output() pageChanged = new EventEmitter<State>();
   // @Output() sortChanged
   // @Output() filterChanged
 
@@ -74,7 +74,7 @@ export class CommonGridComponent {
     return value;
   }
 
-  public pageChange(state: PageChangeEvent): void {
+  public pageChange(state: State): void {
     this.state.skip = state.skip;
     this.state.take = state.take;
     this.pageChanged.emit(state);

@@ -1,10 +1,10 @@
 import { Component, ChangeDetectionStrategy } from '@angular/core';
-import { PageChangeEvent } from '@progress/kendo-angular-grid';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 import { GridColumn } from 'src/app/shared/interfaces'
 import { ComputersService } from './computers.service';
 import { GridDataResult } from '@progress/kendo-angular-grid';
+import { State } from "@progress/kendo-data-query";
 
 @Component({
   selector: 'app-computers',
@@ -25,8 +25,8 @@ export class ComputersComponent {
 
   constructor(private service: ComputersService) {}
 
-  public pageChanged(state: PageChangeEvent): void {
-    this.currentData$ = this.takeComputers(state.skip, state.take);
+  public pageChanged(state: State): void {
+    this.currentData$ = this.takeComputers(state.skip || 0, state.take || 0);
   }
 
   public takeComputers(from: number, to: number): Observable<GridDataResult> {

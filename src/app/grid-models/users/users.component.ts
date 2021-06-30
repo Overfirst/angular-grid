@@ -1,10 +1,10 @@
 import { Component, ChangeDetectionStrategy, ViewChild, TemplateRef, AfterViewInit } from '@angular/core';
-import { PageChangeEvent } from '@progress/kendo-angular-grid';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 import { GridColumn } from 'src/app/shared/interfaces'
 import { UsersService } from './users.service';
 import { GridDataResult } from '@progress/kendo-angular-grid';
+import { State } from "@progress/kendo-data-query";
 
 @Component({
   selector: 'app-users',
@@ -36,8 +36,8 @@ export class UsersComponent implements AfterViewInit {
     }
   }
 
-  public pageChanged(state: PageChangeEvent): void {
-    this.currentData$ = this.takeUsers(state.skip, state.take);
+  public pageChanged(state: State): void {
+    this.currentData$ = this.takeUsers(state.skip || 0, state.take || 0);
   }
 
   public takeUsers(from: number, to: number): Observable<GridDataResult> {

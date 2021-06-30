@@ -1,5 +1,5 @@
 import { Component, ChangeDetectionStrategy, ViewChild, Input, Output, EventEmitter, AfterViewInit } from '@angular/core';
-import { GridDataResult, PageChangeEvent, PagerSettings } from '@progress/kendo-angular-grid';
+import { GridDataResult, PagerSettings } from '@progress/kendo-angular-grid';
 import { GridColumn } from '../../interfaces';
 import { State } from "@progress/kendo-data-query";
 import { TemplateRef } from '@angular/core';
@@ -50,7 +50,7 @@ export class CommonTableComponent implements AfterViewInit {
     }
   }
 
-  @Output() pageChanged = new EventEmitter<PageChangeEvent>();
+  @Output() pageChanged = new EventEmitter<State>();
 
   ngAfterViewInit() {
     if (!this._columnConfig) {
@@ -74,8 +74,9 @@ export class CommonTableComponent implements AfterViewInit {
     });
   }
 
-  public pageChange(state: PageChangeEvent): void {
-    this.state = state;
+  public pageChange(state: State): void {
+    this.state.skip = state.skip;
+    this.state.take = state.take;
     this.pageChanged.emit(state);
   }
 }
