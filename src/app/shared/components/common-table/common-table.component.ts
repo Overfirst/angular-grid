@@ -34,8 +34,11 @@ export class CommonTableComponent implements AfterViewInit {
 
   public _columnConfig: GridColumn[] = [];
 
-  @Input() public set columnConfig(config: GridColumn[]) {
-    this._columnConfig = config;
+  @Input() public set columnConfig(config: GridColumn[] | null) {
+    if (config) {
+      this._columnConfig = config;
+      this.setColumnConfigTemplate();
+    }
   } 
 
   public _loading = false;
@@ -54,6 +57,10 @@ export class CommonTableComponent implements AfterViewInit {
   @Output() pageChanged = new EventEmitter<State>();
 
   ngAfterViewInit() {
+    this.setColumnConfigTemplate();
+  }
+
+  public setColumnConfigTemplate(): void {
     if (!this._columnConfig) {
       return;
     }

@@ -12,6 +12,8 @@ import { State } from "@progress/kendo-data-query";
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ComputersComponent {
+  public columnConfig$ = this.service.getColumnConfig();
+
   public columnConfig: GridColumn[] = [
     { alias: 'name', title: "Name" },
     { alias: 'os', title: "OS" },
@@ -29,6 +31,7 @@ export class ComputersComponent {
     this.currentData$ = this.takeComputers(state.skip || 0, state.take || 0);
   }
 
+  // http cancel switchMap rxjs
   public takeComputers(from: number, to: number): Observable<GridDataResult> {
     this.loading$.next(true);
     return this.service.getComputers(from, to).pipe(

@@ -4,6 +4,7 @@ import { Observable } from "rxjs";
 import { GridDataResult } from "@progress/kendo-angular-grid";
 import { of } from "rxjs";
 import { map, delay, switchMap } from "rxjs/operators";
+import { GridColumn } from "../shared/interfaces";
 
 @Injectable({providedIn: 'root'})
 export class GetDataService {
@@ -29,5 +30,9 @@ export class GetDataService {
                 }),
                 switchMap(data => of(data).pipe(delay(1500))),
             )
+    }
+
+    public getColumnConfig(url: string): Observable<GridColumn[]> {
+        return this.http.get<GridColumn[]>(url);
     }
 }

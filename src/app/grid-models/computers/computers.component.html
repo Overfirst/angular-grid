@@ -1,5 +1,5 @@
 <app-common-table
-  [columnConfig]="columnConfig"
+  [columnConfig]="columnConfig$ | async"
   [data]="currentData$ | async"
   [gridHeight]="540"
   [pageSize]="5"
