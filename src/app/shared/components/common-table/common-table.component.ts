@@ -25,6 +25,7 @@ export class CommonTableComponent implements AfterViewInit {
   @Input() public gridHeight = 900;
   @Input() public pageSize = 20;
   @Input() public sortable = true;
+  @Input() public filterable = true;
   @Input() public pageable: boolean | PagerSettings = true;
   @Input() public groupable = true;
   @Input() public reorderable = true;

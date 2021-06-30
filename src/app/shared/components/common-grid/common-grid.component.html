@@ -1,19 +1,20 @@
 <kendo-grid
     [data]="gridData"
-    kendoGridSelectBy="id"
-    [pageable]="pageable"
     [sortable]="sortable"
+    [pageable]="pageable"
+    [filterable]="filterable"
     [groupable]="groupable"
     [reorderable]="reorderable"
     [resizable]="resizable"
     [height]="gridHeight"
-    [columnMenu]="{ filter: true }"
     [loading]="_loading"
     [sort]="sort"
+    [filter]="state.filter || defaultFilter"
     [skip]="resolveDefault(state.skip, 0)"
     [pageSize]="resolveDefault(state.take, 5)"
     (pageChange)="pageChange($event)"
     (sortChange)="sortChange($event)"
+    (filterChange)="filterChange($event)"
   >
     <kendo-grid-column
       *ngFor="let column of _columnConfig"

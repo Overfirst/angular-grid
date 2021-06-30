@@ -1,7 +1,7 @@
 import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter } from '@angular/core';
 import { GridDataResult, PagerSettings } from '@progress/kendo-angular-grid';
-import { GridColumn, GridFilter, GridFilterItem } from 'src/app/shared/interfaces';
-import { orderBy, SortDescriptor, State } from "@progress/kendo-data-query";
+import { GridColumn, GridFilterItem } from 'src/app/shared/interfaces';
+import { CompositeFilterDescriptor, orderBy, SortDescriptor, State, process } from "@progress/kendo-data-query";
 
 @Component({
   selector: 'app-common-grid',
@@ -14,16 +14,21 @@ export class CommonGridComponent {
   public _loading = false;
   public _columnConfig: GridColumn[] = [];
 
+  public defaultFilter: CompositeFilterDescriptor = {
+    logic: 'and',
+    filters: [],
+  };
+
   public state: State = {
     skip: 0,
     take: 5,
-  }
-
-  private filterTemplate: GridFilter;
+    filter: this.defaultFilter
+  };
 
   @Input() public gridHeight = 900;
   @Input() public pageSize = 20;
   @Input() public sortable = true;
+  @Input() public filterable = true;
   @Input() public pageable: boolean | PagerSettings = true;
   @Input() public groupable = true;
   @Input() public reorderable = true;
@@ -34,22 +39,6 @@ export class CommonGridComponent {
   @Input() public set columnConfig(config: GridColumn[]) {
     if (config) {
       this._columnConfig  = config;
-
-      this.filterTemplate = {
-        filter: {
-          logic: 'or',
-          filters: [],
-        },
-      };
-  
-      this._columnConfig.map(column => column.alias).forEach(alias => {
-        const item: GridFilterItem = {
-          field: alias,
-          operator: 'contains'
-        };
-      
-        this.filterTemplate.filter.filters.push(item);
-      });
     }
   } 
 
@@ -91,5 +80,11 @@ export class CommonGridComponent {
       data: orderBy(this.nativeData, this.sort),
       total: this.gridData.total
     };
+  }
+  
+  public filterChange(filter: CompositeFilterDescriptor): void {
+    this.state.filter = filter;
+    console.log(this.state);
+    this.gridData = process(this.nativeData, this.state);
   }
 }
