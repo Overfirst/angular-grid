@@ -1,7 +1,7 @@
 import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter } from '@angular/core';
 import { GridDataResult, PagerSettings } from '@progress/kendo-angular-grid';
 import { GridColumn, GridFilter, GridFilterItem } from 'src/app/shared/interfaces';
-import { State } from "@progress/kendo-data-query";
+import { orderBy, SortDescriptor, State } from "@progress/kendo-data-query";
 
 @Component({
   selector: 'app-common-grid',
@@ -29,6 +29,7 @@ export class CommonGridComponent {
   @Input() public reorderable = true;
   @Input() public resizable = true;
   @Input() public searchable = true;
+  @Input() public sort: SortDescriptor[] = [];
 
   @Input() public set columnConfig(config: GridColumn[]) {
     if (config) {
@@ -56,9 +57,12 @@ export class CommonGridComponent {
     this._loading = isLoading !== null ? isLoading : false;
   }
 
+  public nativeData: any[] = [];
+
   @Input() public set data(newData: GridDataResult | null) {
     if (newData) {
       this.gridData = newData;
+      this.nativeData = newData.data;
     }
   }
 
@@ -78,5 +82,14 @@ export class CommonGridComponent {
     this.state.skip = state.skip;
     this.state.take = state.take;
     this.pageChanged.emit(state);
+  }
+
+  public sortChange(sort: SortDescriptor[]): void {
+    this.sort = sort;
+
+    this.gridData = {
+      data: orderBy(this.nativeData, this.sort),
+      total: this.gridData.total
+    };
   }
 }

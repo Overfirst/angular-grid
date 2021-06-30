@@ -1,7 +1,7 @@
 import { Component, ChangeDetectionStrategy, ViewChild, Input, Output, EventEmitter, AfterViewInit } from '@angular/core';
 import { GridDataResult, PagerSettings } from '@progress/kendo-angular-grid';
 import { GridColumn } from '../../interfaces';
-import { State } from "@progress/kendo-data-query";
+import { SortDescriptor, State } from "@progress/kendo-data-query";
 import { TemplateRef } from '@angular/core';
 
 @Component({
@@ -30,6 +30,7 @@ export class CommonTableComponent implements AfterViewInit {
   @Input() public reorderable = true;
   @Input() public resizable = true;
   @Input() public searchable = true;
+  @Input() public sort: SortDescriptor[] = [];
 
   public _columnConfig: GridColumn[] = [];
 

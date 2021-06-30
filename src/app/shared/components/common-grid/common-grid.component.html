@@ -9,9 +9,11 @@
     [height]="gridHeight"
     [columnMenu]="{ filter: true }"
     [loading]="_loading"
+    [sort]="sort"
     [skip]="resolveDefault(state.skip, 0)"
     [pageSize]="resolveDefault(state.take, 5)"
     (pageChange)="pageChange($event)"
+    (sortChange)="sortChange($event)"
   >
     <kendo-grid-column
       *ngFor="let column of _columnConfig"
