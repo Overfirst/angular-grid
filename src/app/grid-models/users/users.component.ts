@@ -1,6 +1,6 @@
 import { Component, ChangeDetectionStrategy, ViewChild, TemplateRef, AfterViewInit } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { finalize } from 'rxjs/operators';
+import { tap } from 'rxjs/operators';
 import { GridColumn } from 'src/app/shared/interfaces'
 import { UsersService } from './users.service';
 import { GridDataResult } from '@progress/kendo-angular-grid';
@@ -43,7 +43,7 @@ export class UsersComponent implements AfterViewInit {
   public takeUsers(from: number, to: number): Observable<GridDataResult> {
     this.loading$.next(true);
     return this.service.getUsers(from, to).pipe(
-      finalize(() => this.loading$.next(false))
+      tap(() => this.loading$.next(false))
     );
   }
 }

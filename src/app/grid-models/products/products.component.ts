@@ -1,6 +1,6 @@
 import { Component, ChangeDetectionStrategy, ViewChild, TemplateRef, AfterViewInit } from '@angular/core';
 import { BehaviorSubject, Observable, of } from 'rxjs';
-import { finalize } from 'rxjs/operators';
+import { tap } from 'rxjs/operators';
 import { GridColumn } from 'src/app/shared/interfaces'
 import { ProductsService } from './products.service';
 import { GridDataResult } from '@progress/kendo-angular-grid';
@@ -41,7 +41,7 @@ export class ProductsComponent implements AfterViewInit {
   public takeProducts(from: number, to: number): Observable<GridDataResult> {
     this.loading$.next(true);
     return this.service.getProducts(from, to).pipe(
-      finalize(() => this.loading$.next(false))
+      tap(() => this.loading$.next(false))
     );
   }
 }

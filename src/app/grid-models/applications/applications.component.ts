@@ -1,6 +1,6 @@
 import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { BehaviorSubject, Observable, of } from 'rxjs';
-import { finalize } from 'rxjs/operators';
+import { tap } from 'rxjs/operators';
 import { GridColumn } from 'src/app/shared/interfaces'
 import { ApplicationsService } from './applications.service';
 import { GridDataResult } from '@progress/kendo-angular-grid';
@@ -31,7 +31,7 @@ export class ApplicationsComponent {
   public takeApplications(from: number, to: number): Observable<GridDataResult> {
     this.loading$.next(true);
     return this.service.getApplications(from, to).pipe(
-      finalize(() => this.loading$.next(false))
+      tap(() => this.loading$.next(false))
     );
   }
 }

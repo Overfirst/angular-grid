@@ -1,7 +1,6 @@
 import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { BehaviorSubject, Observable, of } from 'rxjs';
-import { finalize } from 'rxjs/operators';
-import { GridColumn } from 'src/app/shared/interfaces'
+import { tap } from 'rxjs/operators';
 import { ComputersService } from './computers.service';
 import { GridDataResult } from '@progress/kendo-angular-grid';
 import { State } from "@progress/kendo-data-query";
@@ -22,11 +21,10 @@ export class ComputersComponent {
     this.currentData$ = this.takeComputers(state.skip || 0, state.take || 0);
   }
 
-  // http cancel switchMap rxjs
   public takeComputers(from: number, to: number): Observable<GridDataResult> {
     this.loading$.next(true);
     return this.service.getComputers(from, to).pipe(
-      finalize(() => this.loading$.next(false))
+      tap(() => this.loading$.next(false))
     );
   }
 }
