@@ -9,6 +9,7 @@ import {
   } from "@progress/kendo-angular-grid";
 
 import { InputsModule } from "@progress/kendo-angular-inputs";
+import { RatingComponent } from './components/rating/rating.component';
 
 @NgModule({
     imports: [
@@ -19,13 +20,17 @@ import { InputsModule } from "@progress/kendo-angular-inputs";
         ExcelModule,
         InputsModule
     ],
+    declarations: [
+      RatingComponent
+    ],
     exports: [
         CommonModule,
         HttpClientModule,
         GridModule,
         PDFModule,
         ExcelModule,
-        InputsModule
+        InputsModule,
+        RatingComponent
     ]
 })
 export class SharedModule {}

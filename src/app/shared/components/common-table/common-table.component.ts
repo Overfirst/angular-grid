@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy, ViewChild, ElementRef, Input, Output, EventEmitter, AfterViewInit } from '@angular/core';
+import { Component, ChangeDetectionStrategy, ViewChild, Input, Output, EventEmitter, AfterViewInit } from '@angular/core';
 import { GridDataResult, PageChangeEvent, PagerSettings } from '@progress/kendo-angular-grid';
 import { GridColumn } from '../../interfaces';
 import { State } from "@progress/kendo-data-query";
@@ -15,10 +15,12 @@ export class CommonTableComponent implements AfterViewInit {
   @ViewChild('dateTemplate') public dateTemplate: TemplateRef<HTMLElement>;
   @ViewChild('listTemplate') public listTemplate: TemplateRef<HTMLElement>;
 
-  public state: State = {
+  public state: State =  {
+    sort: [],
     skip: 0,
     take: 5,
-  }
+    filter: { logic: 'and', filters: [] }
+  };
   
   @Input() public gridHeight = 900;
   @Input() public pageSize = 20;

@@ -1,6 +1,6 @@
-import { Component, ChangeDetectionStrategy } from '@angular/core';
+import { Component, ChangeDetectionStrategy, ViewChild, TemplateRef, AfterViewInit } from '@angular/core';
 import { PageChangeEvent } from '@progress/kendo-angular-grid';
-import { BehaviorSubject, Observable, of } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 import { GridColumn } from 'src/app/shared/interfaces'
 import { UsersService } from './users.service';
@@ -11,18 +11,30 @@ import { GridDataResult } from '@progress/kendo-angular-grid';
   templateUrl: './users.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class UsersComponent {
+export class UsersComponent implements AfterViewInit {
+  @ViewChild('ratingTemplate') ratingTemplate: TemplateRef<HTMLElement>; 
+
   public columnConfig: GridColumn[] = [
-    { alias: 'name', title: "Name", width: 300 },
-    { alias: 'surname', title: "Surname", width: 300 },
-    { alias: 'email', title: "Email", width: 600 },
+    { alias: 'name', title: "Name" },
+    { alias: 'surname', title: "Surname" },
+    { alias: 'email', title: "Email", width: 350 },
     { alias: 'avatar', title: "Avatar", hidden: true },
+    { alias: 'rating', title: "Rating" },
   ];
 
   public loading$ = new BehaviorSubject<boolean>(false);
   public currentData$ = this.takeUsers(0, 5);
 
   constructor(private service: UsersService) {}
+
+  ngAfterViewInit() {
+    const ratingColumn = this.columnConfig.find(column => column.alias === 'rating');
+
+    // todo: immutable
+    if (ratingColumn) {
+      ratingColumn.customTemplate = this.ratingTemplate
+    }
+  }
 
   public pageChanged(state: PageChangeEvent): void {
     this.currentData$ = this.takeUsers(state.skip, state.take);

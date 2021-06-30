@@ -22,7 +22,7 @@
       [hidden]="resolveDefault(column.hidden, false)"
     >
       <ng-template kendoGridCellTemplate let-item>
-        <ng-container *ngTemplateOutlet="column.template || null; context: {item: item[column.alias]}"></ng-container>
+        <ng-container *ngTemplateOutlet="column.customTemplate || column.template || null; context: {item: item[column.alias]}"></ng-container>
       </ng-template>
     </kendo-grid-column>
 </kendo-grid>

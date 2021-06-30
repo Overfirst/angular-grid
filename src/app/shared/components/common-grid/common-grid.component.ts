@@ -63,6 +63,8 @@ export class CommonGridComponent {
   }
 
   @Output() pageChanged = new EventEmitter<PageChangeEvent>();
+  // @Output() sortChanged
+  // @Output() filterChanged
 
   public resolveDefault<T>(value: T | undefined, defaultValue: T): T {
     if (value === undefined) {
@@ -73,7 +75,8 @@ export class CommonGridComponent {
   }
 
   public pageChange(state: PageChangeEvent): void {
-    this.state = state;
+    this.state.skip = state.skip;
+    this.state.take = state.take;
     this.pageChanged.emit(state);
   }
 }

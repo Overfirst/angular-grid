@@ -30,6 +30,7 @@ export interface GridColumn {
     hidden?: boolean;
     type?: 'text' | 'boolean' | 'list' | 'date',
     template?: TemplateRef<HTMLElement>
+    customTemplate?: TemplateRef<HTMLElement>
 }
 
 export interface GridFilterItem {

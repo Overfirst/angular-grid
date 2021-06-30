@@ -15,3 +15,7 @@
   [loading]="loading$ | async"
   (pageChanged)="pageChanged($event)"
 ></app-common-table>
+
+<ng-template #ratingTemplate let-rating="item">
+  <app-rating [value]="rating"></app-rating>
+</ng-template>
