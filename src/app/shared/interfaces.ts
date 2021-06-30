@@ -23,13 +23,6 @@ export interface Application {
     installDate: Date;    
 }
 
-export interface Product {
-    id: number;
-    name: string;
-    inStock: number;
-    cost: number;
-}
-
 export interface GridColumn {
     alias: string;
     title?: string;
