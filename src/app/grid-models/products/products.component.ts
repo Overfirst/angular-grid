@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy } from '@angular/core';
+import { Component, ChangeDetectionStrategy, ViewChild, TemplateRef, AfterViewInit } from '@angular/core';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 import { GridColumn } from 'src/app/shared/interfaces'
@@ -11,13 +11,23 @@ import { State } from "@progress/kendo-data-query";
   templateUrl: './products.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ProductsComponent {
+export class ProductsComponent implements AfterViewInit {
+  @ViewChild('priceTemplate') public priceTemplate: TemplateRef<HTMLElement>;
+
   public columnConfig: GridColumn[] = [
-    { alias: 'id', title: "Product ID" },
-    { alias: 'name', title: "Product name" },
-    { alias: 'inStock', title: "Units in stock" },
-    { alias: 'cost', title: "Unit price" },
+    { alias: 'ProductID', title: "Product ID" },
+    { alias: 'ProductName', title: "Product name" },
+    { alias: 'UnitPrice', title: "Unit price" },
+    { alias: 'UnitsInStock', title: "Units in stock" },
   ];
+
+  ngAfterViewInit() {
+    const columnPrice = this.columnConfig.find(column => column.alias === 'UnitPrice');
+
+    if (columnPrice) {
+      columnPrice.customTemplate = this.priceTemplate;
+    }
+  }
 
   public loading$ = new BehaviorSubject<boolean>(false);
   public currentData$ = this.takeProducts(0, 5);
