@@ -1,6 +1,7 @@
 .nav_container {
     display: flex;
     margin-bottom: 10px;
+    justify-content: center;
 
     $btn-color: rgb(255, 170, 0);
 
@@ -13,9 +14,10 @@
         text-decoration: none;
         text-transform: uppercase;
         transition: all 0.2s;
+        opacity: 0.75;
     }
 
-    a:hover {
+    a:hover:not(.active) {
         background: $btn-color;
     }
 
