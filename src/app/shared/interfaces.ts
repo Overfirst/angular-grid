@@ -32,18 +32,3 @@ export interface GridColumn {
     template?: TemplateRef<HTMLElement>
     customTemplate?: TemplateRef<HTMLElement>
 }
-
-export interface GridFilterItem {
-    field: string;
-    operator: 'contains';
-    value?: string;
-}
-
-type GridFilterLogic = 'or' | 'and';
-
-export interface GridFilter {
-    filter: {
-        logic: GridFilterLogic;
-        filters: GridFilterItem[];
-    }
-}
