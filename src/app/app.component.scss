@@ -2,24 +2,26 @@
     display: flex;
     margin-bottom: 10px;
 
+    $btn-color: rgb(255, 170, 0);
+
     a {
-        color: rgb(32, 185, 246);
+        color: rgb(0, 0, 0);
         margin-right: 12px;
         padding: 8px;
-        border: 1px solid rgb(97, 90, 76);
-        border-radius: 6px;
+        border-radius: 2px;
+        border: 2px solid $btn-color;
         text-decoration: none;
         text-transform: uppercase;
-        opacity: 0.6;
-        transform: all 0.2s;
+        transition: all 0.2s;
     }
 
     a:hover {
-        opacity: 0.8;
+        background: $btn-color;
     }
 
     .active {
-        color: rgb(17, 108, 255);
+        background: $btn-color;
+        color: rgb(251, 251, 251);
         opacity: 1;
     }
 }
