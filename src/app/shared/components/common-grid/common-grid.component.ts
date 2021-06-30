@@ -84,7 +84,6 @@ export class CommonGridComponent {
   
   public filterChange(filter: CompositeFilterDescriptor): void {
     this.state.filter = filter;
-    console.log(this.state);
     this.gridData = process(this.nativeData, this.state);
   }
 }
