@@ -13,15 +13,6 @@ import { State } from "@progress/kendo-data-query";
 })
 export class ComputersComponent {
   public columnConfig$ = this.service.getColumnConfig();
-
-  public columnConfig: GridColumn[] = [
-    { alias: 'name', title: "Name" },
-    { alias: 'os', title: "OS" },
-    { alias: 'arch', title: "Architecture" },
-    { alias: 'ram', title: "RAM" },
-    { alias: 'cpu', title: "CPU" },
-  ];
-
   public loading$ = new BehaviorSubject<boolean>(false);
   public currentData$ = this.takeComputers(0, 5);
 
