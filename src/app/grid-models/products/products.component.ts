@@ -1,5 +1,5 @@
 import { Component, ChangeDetectionStrategy, ViewChild, TemplateRef, AfterViewInit } from '@angular/core';
-import { BehaviorSubject, Observable, of } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { GridColumn } from 'src/app/shared/interfaces'
 import { ProductsService } from './products.service';
