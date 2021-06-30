@@ -8,6 +8,7 @@ import { SharedModule } from "./shared/shared.module"
 import { UsersModule } from "./grid-models/users/users.module";
 import { ComputersModule } from "./grid-models/computers/computers.module";
 import { ApplicationsModule } from "./grid-models/applications/applications.module";
+import { ProductsModule } from "./grid-models/products/products.module";
 import { AppRoutingModule } from "./app.routing.module";
 
 @NgModule({
@@ -19,6 +20,7 @@ import { AppRoutingModule } from "./app.routing.module";
     UsersModule,
     ComputersModule,
     ApplicationsModule,
+    ProductsModule
   ],
   declarations: [
     AppComponent,

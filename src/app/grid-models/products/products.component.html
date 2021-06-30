@@ -1,1 +1,17 @@
-<p>products works!</p>
+<app-common-table
+  [columnConfig]="columnConfig"
+  [data]="currentData$ | async"
+  [gridHeight]="540"
+  [pageSize]="5"
+  [pageable]="{
+    buttonCount: 5,
+    info: true,
+    type: 'numeric',
+    pageSizes: [5, 10],
+    previousNext: true
+  }"
+  [resizable]="false"
+  [reorderable]="false"
+  [loading]="loading$ | async"
+  (pageChanged)="pageChanged($event)"
+></app-common-table>
