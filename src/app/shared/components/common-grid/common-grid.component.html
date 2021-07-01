@@ -23,6 +23,7 @@
       [title]="resolveDefault(column.title, column.alias)"
       [width]="resolveDefault(column.width, 300)"
       [hidden]="resolveDefault(column.hidden, false)"
+      [filter]="resolveDefault(column.filter, 'text')"
     >
       <ng-template kendoGridCellTemplate let-item>
         <ng-container *ngTemplateOutlet="column.customTemplate || column.template || null; context: {item: item[column.alias]}"></ng-container>
