@@ -4,7 +4,7 @@ import { tap } from 'rxjs/operators';
 import { GridColumn } from 'src/app/shared/interfaces'
 import { UsersService } from './users.service';
 import { GridDataResult } from '@progress/kendo-angular-grid';
-import { State } from "@progress/kendo-data-query";
+import { State } from '@progress/kendo-data-query';
 
 @Component({
   selector: 'app-users',
@@ -15,11 +15,11 @@ export class UsersComponent implements AfterViewInit {
   @ViewChild('ratingTemplate') ratingTemplate: TemplateRef<HTMLElement>; 
 
   public columnConfig: GridColumn[] = [
-    { alias: 'name', title: "Name" },
-    { alias: 'surname', title: "Surname" },
-    { alias: 'email', title: "Email", width: 350 },
-    { alias: 'avatar', title: "Avatar", hidden: true },
-    { alias: 'rating', title: "Rating" },
+    { alias: 'name', title: 'Name' },
+    { alias: 'surname', title: 'Surname' },
+    { alias: 'email', title: 'Email', width: 350 },
+    { alias: 'avatar', title: 'Avatar', hidden: true },
+    { alias: 'rating', title: 'Rating' },
   ];
 
   public loading$ = new BehaviorSubject<boolean>(false);

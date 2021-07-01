@@ -4,7 +4,7 @@ import { tap } from 'rxjs/operators';
 import { GridColumn } from 'src/app/shared/interfaces'
 import { ProductsService } from './products.service';
 import { GridDataResult } from '@progress/kendo-angular-grid';
-import { State } from "@progress/kendo-data-query";
+import { State } from '@progress/kendo-data-query';
 
 @Component({
   selector: 'app-products',
@@ -15,13 +15,13 @@ export class ProductsComponent implements AfterViewInit {
   @ViewChild('priceTemplate') public priceTemplate: TemplateRef<HTMLElement>;
 
   public columnConfig: GridColumn[] = [
-    { alias: 'ProductID', title: "Product ID" },
-    { alias: 'ProductName', title: "Product name" },
-    { alias: 'UnitPrice', title: "Unit price" },
-    { alias: 'UnitsInStock', title: "Units in stock" },
+    { alias: 'ProductID', title: 'Product ID' },
+    { alias: 'ProductName', title: 'Product name' },
+    { alias: 'UnitPrice', title: 'Unit price' },
+    { alias: 'UnitsInStock', title: 'Units in stock' },
   ];
 
-  ngAfterViewInit() {
+  public ngAfterViewInit(): void {
     const columnPrice = this.columnConfig.find(column => column.alias === 'UnitPrice');
 
     if (columnPrice) {

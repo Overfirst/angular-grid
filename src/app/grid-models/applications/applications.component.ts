@@ -4,7 +4,7 @@ import { tap } from 'rxjs/operators';
 import { GridColumn } from 'src/app/shared/interfaces'
 import { ApplicationsService } from './applications.service';
 import { GridDataResult } from '@progress/kendo-angular-grid';
-import { State } from "@progress/kendo-data-query";
+import { State } from '@progress/kendo-data-query';
 
 @Component({
   selector: 'app-applications',
@@ -13,10 +13,10 @@ import { State } from "@progress/kendo-data-query";
 })
 export class ApplicationsComponent {
   public columnConfig: GridColumn[] = [
-    { alias: 'name', title: "Name" },
-    { alias: 'arch', title: "Architecture" },
-    { alias: 'vendor', title: "Vendor" },
-    { alias: 'size', title: "Size", hidden: true },
+    { alias: 'name', title: 'Name' },
+    { alias: 'arch', title: 'Architecture' },
+    { alias: 'vendor', title: 'Vendor' },
+    { alias: 'size', title: 'Size', hidden: true },
   ];
 
   public loading$ = new BehaviorSubject<boolean>(false);

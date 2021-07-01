@@ -1,7 +1,7 @@
 import { Component, ChangeDetectionStrategy, ViewChild, Input, Output, EventEmitter, AfterViewInit } from '@angular/core';
 import { GridDataResult, PagerSettings } from '@progress/kendo-angular-grid';
 import { GridColumn } from '../../interfaces';
-import { SortDescriptor, State } from "@progress/kendo-data-query";
+import { SortDescriptor, State } from '@progress/kendo-data-query';
 import { TemplateRef } from '@angular/core';
 
 @Component({
@@ -57,7 +57,7 @@ export class CommonTableComponent implements AfterViewInit {
 
   @Output() pageChanged = new EventEmitter<State>();
 
-  ngAfterViewInit() {
+  public ngAfterViewInit(): void {
     this.setColumnConfigTemplate();
   }
 

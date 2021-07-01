@@ -1,8 +1,8 @@
-import { Injectable } from "@angular/core";
-import { GridDataResult } from "@progress/kendo-angular-grid";
-import { Observable, of } from "rxjs";
-import { GridColumn } from "src/app/shared/interfaces";
-import { GetDataService } from "../get-data.service";
+import { Injectable } from '@angular/core';
+import { GridDataResult } from '@progress/kendo-angular-grid';
+import { Observable, of } from 'rxjs';
+import { GridColumn } from 'src/app/shared/interfaces';
+import { GetDataService } from '../get-data.service';
 
 @Injectable({providedIn: 'root'})
 export class ComputersService {

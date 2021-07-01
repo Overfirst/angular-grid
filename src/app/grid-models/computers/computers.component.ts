@@ -3,7 +3,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { ComputersService } from './computers.service';
 import { GridDataResult } from '@progress/kendo-angular-grid';
-import { State } from "@progress/kendo-data-query";
+import { State } from '@progress/kendo-data-query';
 
 @Component({
   selector: 'app-computers',

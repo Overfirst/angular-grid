@@ -1,7 +1,7 @@
 import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter } from '@angular/core';
 import { GridDataResult, PagerSettings } from '@progress/kendo-angular-grid';
 import { GridColumn } from 'src/app/shared/interfaces';
-import { CompositeFilterDescriptor, orderBy, SortDescriptor, State, process } from "@progress/kendo-data-query";
+import { CompositeFilterDescriptor, orderBy, SortDescriptor, State, process } from '@progress/kendo-data-query';
 
 @Component({
   selector: 'app-common-grid',

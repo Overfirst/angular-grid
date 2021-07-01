@@ -1,15 +1,15 @@
-import { NgModule } from "@angular/core";
-import { BrowserModule } from "@angular/platform-browser";
-import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
+import { NgModule } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-import { AppComponent } from "./app.component";
-import { SharedModule } from "./shared/shared.module"
+import { AppComponent } from './app.component';
+import { AppRoutingModule } from './app.routing.module';
+import { SharedModule } from './shared/shared.module'
 
-import { UsersModule } from "./grid-models/users/users.module";
-import { ComputersModule } from "./grid-models/computers/computers.module";
-import { ApplicationsModule } from "./grid-models/applications/applications.module";
-import { ProductsModule } from "./grid-models/products/products.module";
-import { AppRoutingModule } from "./app.routing.module";
+import { UsersModule } from './grid-models/users/users.module';
+import { ComputersModule } from './grid-models/computers/computers.module';
+import { ApplicationsModule } from './grid-models/applications/applications.module';
+import { ProductsModule } from './grid-models/products/products.module';
 
 @NgModule({
   imports: [
@@ -22,9 +22,7 @@ import { AppRoutingModule } from "./app.routing.module";
     ApplicationsModule,
     ProductsModule
   ],
-  declarations: [
-    AppComponent,
-  ],
+  declarations: [AppComponent],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
