@@ -34,3 +34,9 @@ export interface GridColumn {
     template?: TemplateRef<HTMLElement>
     customTemplate?: TemplateRef<HTMLElement>
 }
+
+export interface AzureHttpResponse {
+    '@odata.context'?: string;
+    '@odata.count'?: number;
+    value?: any[];
+}

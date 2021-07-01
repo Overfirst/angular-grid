@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
 import { State, toODataString } from '@progress/kendo-data-query';
+import { AzureHttpResponse } from 'src/app/shared/interfaces';
 
 @Injectable({providedIn: 'root'})
 export class ProductsService {
@@ -16,12 +17,14 @@ export class ProductsService {
         const query = `${toODataString(state)}&$count=true`;
 
         return this.http.get(`${this.URL}?${query}`).pipe(
-            map((response: any) => {
+            map((response: AzureHttpResponse) => {
                 const result: GridDataResult = {
-                    data: response['value'],
-                    total: +response['@odata.count']
+                    data: response.value || [],
+                    total: +(response['@odata.count'] || 0)
                 };
                 
+                console.log(response);
+
                 return result;
             })
         );
