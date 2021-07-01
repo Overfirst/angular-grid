@@ -48,11 +48,13 @@ export class CommonGridComponent {
   }
 
   public nativeData: any[] = [];
+  public total = 0
 
   @Input() public set data(newData: GridDataResult | null) {
     if (newData) {
       this.gridData = newData;
       this.nativeData = newData.data;
+      this.total = newData.total;
     }
   }
 
@@ -90,6 +92,10 @@ export class CommonGridComponent {
     this.state.filter = filter;
     console.log('filterChanged:', this.state);
     this.gridData = process(this.nativeData, this.state);
+
+    if (filter.filters.length === 0) {
+      this.gridData = {...this.gridData, total: this.total}
+    }
   }
 
   public resolveDictionary(column: GridColumn): Observable<{name: string}[]> {
