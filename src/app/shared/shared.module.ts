@@ -8,8 +8,10 @@ import {
     ExcelModule,
   } from "@progress/kendo-angular-grid";
 
+import { DropDownListModule } from "@progress/kendo-angular-dropdowns";
 import { InputsModule } from "@progress/kendo-angular-inputs";
 import { RatingComponent } from './components/rating/rating.component';
+import { DropDownListFilterComponent } from "./components/dropdown-filter/dropdown-filter.component";
 
 @NgModule({
     imports: [
@@ -18,10 +20,12 @@ import { RatingComponent } from './components/rating/rating.component';
         GridModule,
         PDFModule,
         ExcelModule,
-        InputsModule
+        InputsModule,
+        DropDownListModule
     ],
     declarations: [
-      RatingComponent
+      RatingComponent,
+      DropDownListFilterComponent
     ],
     exports: [
         CommonModule,
@@ -30,7 +34,9 @@ import { RatingComponent } from './components/rating/rating.component';
         PDFModule,
         ExcelModule,
         InputsModule,
-        RatingComponent
+        DropDownListModule,
+        RatingComponent,
+        DropDownListFilterComponent
     ]
 })
 export class SharedModule {}

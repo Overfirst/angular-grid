@@ -2,6 +2,7 @@ import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter } from 
 import { GridDataResult, PagerSettings } from '@progress/kendo-angular-grid';
 import { GridColumn } from 'src/app/shared/interfaces';
 import { CompositeFilterDescriptor, orderBy, SortDescriptor, State, process } from '@progress/kendo-data-query';
+import { Observable, of } from 'rxjs';
 
 @Component({
   selector: 'app-common-grid',
@@ -67,6 +68,11 @@ export class CommonGridComponent {
     return value;
   }
 
+  public hasCustomFilter(column: GridColumn): boolean {
+      console.log('hasCustomFilter: ', column);
+      return false;
+  }
+
   public pageChange(state: State): void {
     this.state.skip = state.skip;
     this.state.take = state.take;
@@ -84,6 +90,11 @@ export class CommonGridComponent {
   
   public filterChange(filter: CompositeFilterDescriptor): void {
     this.state.filter = filter;
+    console.log('filterChanged:', this.state);
     this.gridData = process(this.nativeData, this.state);
+  }
+
+  public resolveDictionary(column: GridColumn): Observable<{name: string}[]> {
+    return column.customFilter!.dictionary$ || of(column.customFilter!.dictionary || []);
   }
 }

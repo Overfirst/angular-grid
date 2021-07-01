@@ -4,6 +4,7 @@ import { tap } from 'rxjs/operators';
 import { ComputersService } from './computers.service';
 import { GridDataResult } from '@progress/kendo-angular-grid';
 import { State } from '@progress/kendo-data-query';
+import { GridColumn } from 'src/app/shared/interfaces';
 
 @Component({
   selector: 'app-computers',
@@ -14,6 +15,25 @@ export class ComputersComponent {
   public columnConfig$ = this.service.getColumnConfig();
   public loading$ = new BehaviorSubject<boolean>(false);
   public currentData$ = this.takeComputers(0, 5);
+
+  public columnConfig: GridColumn[] = [
+    { alias: 'name', title: "Name" },
+    {
+      alias: 'os',
+      title: "OS",
+      customFilter: {
+        dictionary: [
+          { name: 'Windows 7'},
+          { name: 'Windows 8'},
+          { name: 'Windows 8.1'},
+          { name: 'Windows 10'} 
+        ]
+      }
+    },
+    { alias: 'arch', title: "Architecture" },
+    { alias: 'ram', title: "RAM" },
+    { alias: 'cpu', title: "CPU" },
+  ];
 
   constructor(private service: ComputersService) {}
 

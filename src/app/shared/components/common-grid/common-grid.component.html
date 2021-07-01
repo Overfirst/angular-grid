@@ -26,8 +26,20 @@
       [filterable]="resolveDefault(column.filterable, true)"
       [filter]="resolveDefault(column.filter, 'text')"
     >
-      <ng-template kendoGridCellTemplate let-item>
+    <ng-container *ngIf="column.customFilter">
+      <ng-container *ngIf="resolveDictionary(column) | async as dictionary">
+        <ng-template kendoGridFilterCellTemplate let-filter>
+          <app-dropdown-filter
+            [filter]="filter"
+            [data]="dictionary"
+            [valueField]="column.alias"
+          ></app-dropdown-filter>
+        </ng-template>
+      </ng-container>
+    </ng-container>
+
+    <ng-template kendoGridCellTemplate let-item>
         <ng-container *ngTemplateOutlet="column.customTemplate || column.template || null; context: {item: item[column.alias]}"></ng-container>
-      </ng-template>
+    </ng-template>
     </kendo-grid-column>
 </kendo-grid>

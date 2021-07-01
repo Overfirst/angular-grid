@@ -7,7 +7,7 @@ import { GetDataService } from '../get-data.service';
 @Injectable({providedIn: 'root'})
 export class ComputersService {
     private readonly DATA_URL = 'https://run.mocky.io/v3/082ab2d3-5dd0-48f8-b448-73497de7264e';
-    private readonly CONFIG_URL = 'https://run.mocky.io/v3/8bde9006-22c3-4302-b8e7-8f506bcd96d0';
+    private readonly CONFIG_URL = 'https://run.mocky.io/v3/d29116f0-a9ad-4475-9353-915cd9dabf32';
 
     constructor(private getDataService: GetDataService) {}
 

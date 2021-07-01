@@ -1,4 +1,5 @@
 import { TemplateRef } from "@angular/core";
+import { Observable } from "rxjs";
 
 export interface User {
     name: string;
@@ -28,11 +29,17 @@ export interface GridColumn {
     title?: string;
     width?: number;
     hidden?: boolean;
-    type?: 'text' | 'boolean' | 'list' | 'date',
-    filter?: 'text' | 'numeric' | 'boolean' | 'date'
+    type?: 'text' | 'boolean' | 'list' | 'date';
+    filter?: 'text' | 'numeric' | 'boolean' | 'date';
+    
+    customFilter?: {
+        dictionary?: {name: string}[];
+        dictionary$?: Observable<{name: string}[]>;
+    };
+
     filterable?: boolean;
-    template?: TemplateRef<HTMLElement>
-    customTemplate?: TemplateRef<HTMLElement>
+    template?: TemplateRef<HTMLElement>;
+    customTemplate?: TemplateRef<HTMLElement>;
 }
 
 export interface AzureHttpResponse {
