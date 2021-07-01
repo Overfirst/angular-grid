@@ -57,8 +57,6 @@ export class CommonGridComponent {
   }
 
   @Output() pageChanged = new EventEmitter<State>();
-  // @Output() sortChanged
-  // @Output() filterChanged
 
   public resolveDefault<T>(value: T | undefined, defaultValue: T): T {
     if (value === undefined) {

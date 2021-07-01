@@ -1,8 +1,8 @@
 <kendo-grid
     [data]="gridData"
-    [sortable]="sortable"
+    [sortable]="sortable && !_loading"
     [pageable]="pageable"
-    [filterable]="filterable"
+    [filterable]="filterable && !_loading"
     [groupable]="groupable"
     [reorderable]="reorderable"
     [resizable]="resizable"
