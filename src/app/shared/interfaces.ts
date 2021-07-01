@@ -30,6 +30,7 @@ export interface GridColumn {
     hidden?: boolean;
     type?: 'text' | 'boolean' | 'list' | 'date',
     filter?: 'text' | 'numeric' | 'boolean' | 'date'
+    filterable?: boolean;
     template?: TemplateRef<HTMLElement>
     customTemplate?: TemplateRef<HTMLElement>
 }
