@@ -1,5 +1,5 @@
 import { Component, ChangeDetectionStrategy, ViewChild, Input, Output, EventEmitter, AfterViewInit } from '@angular/core';
-import { GridDataResult, PagerSettings } from '@progress/kendo-angular-grid';
+import { AddEvent, PagerSettings, RemoveEvent, SaveEvent } from '@progress/kendo-angular-grid';
 import { GridColumn } from '../../interfaces';
 import { SortDescriptor, State } from '@progress/kendo-data-query';
 import { TemplateRef } from '@angular/core';
@@ -15,13 +15,6 @@ export class CommonTableComponent implements AfterViewInit {
   @ViewChild('dateTemplate') public dateTemplate: TemplateRef<HTMLElement>;
   @ViewChild('listTemplate') public listTemplate: TemplateRef<HTMLElement>;
 
-  public state: State =  {
-    sort: [],
-    skip: 0,
-    take: 5,
-    filter: { logic: 'and', filters: [] }
-  };
-  
   @Input() public gridHeight = 900;
   @Input() public pageSize = 20;
   @Input() public sortable = true;
@@ -32,6 +25,10 @@ export class CommonTableComponent implements AfterViewInit {
   @Input() public resizable = true;
   @Input() public searchable = true;
   @Input() public sort: SortDescriptor[] = [];
+
+  @Input() public editable = false;
+  @Input() public removable = false;
+  @Input() public canCreate = false;
 
   public _columnConfig: GridColumn[] = [];
 
@@ -47,15 +44,17 @@ export class CommonTableComponent implements AfterViewInit {
     this._loading = isLoading !== null ? isLoading : false;
   }
 
-  public gridData: GridDataResult = {data: [], total: 0};
+  public gridData: any[] = [];
 
-  @Input() public set data(newData: GridDataResult | null) {
+  @Input() public set data(newData: any[] | null) {
     if (newData) {
       this.gridData = newData;
     }
   }
 
-  @Output() pageChanged = new EventEmitter<State>();
+  @Output() public onItemEdit = new EventEmitter<SaveEvent>();
+  @Output() public onItemRemove = new EventEmitter<RemoveEvent>();
+  @Output() public onItemAdd = new EventEmitter<AddEvent>();
 
   public ngAfterViewInit(): void {
     this.setColumnConfigTemplate();
@@ -83,9 +82,15 @@ export class CommonTableComponent implements AfterViewInit {
     });
   }
 
-  public pageChange(state: State): void {
-    this.state.skip = state.skip;
-    this.state.take = state.take;
-    this.pageChanged.emit(state);
+  public editHandler(event: SaveEvent): void {
+    this.onItemEdit.emit(event);
+  }
+
+  public addHandler(event: AddEvent): void {
+    this.onItemAdd.emit(event);
+  }
+  
+  public removeHandler(event: RemoveEvent): void {
+    this.onItemRemove.emit(event);
   }
 }

@@ -1,6 +1,6 @@
 <app-common-table
   [columnConfig]="columnConfig"
-  [data]="currentData$ | async"
+  [data]="products$ | async"
   [gridHeight]="540"
   [pageSize]="5"
   [pageable]="{
@@ -13,9 +13,10 @@
   [resizable]="false"
   [reorderable]="false"
   [loading]="loading$ | async"
-  (pageChanged)="pageChanged($event)"
+  [editable]="true"
+  [removable]="true"
+  [canCreate]="true"
+  (onItemAdd)="addProduct($event)"
+  (onItemEdit)="editProduct($event)"
+  (onItemRemove)="removeProduct($event)"
 ></app-common-table>
-
-<ng-template #priceTemplate let-element="item">
-    {{ element | currency:'$'}}
-</ng-template>

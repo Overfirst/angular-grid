@@ -1,17 +1,22 @@
 <app-common-table
   [columnConfig]="columnConfig$ | async"
-  [data]="currentData$ | async"
+  [data]="computers$ | async"
   [gridHeight]="540"
   [pageSize]="5"
   [pageable]="{
     buttonCount: 5,
     info: true,
     type: 'numeric',
-    pageSizes: [5, 10, 20],
+    pageSizes: [5, 10],
     previousNext: true
   }"
   [resizable]="false"
   [reorderable]="false"
   [loading]="loading$ | async"
-  (pageChanged)="pageChanged($event)"
+  [editable]="true"
+  [removable]="true"
+  [canCreate]="true"
+  (onItemAdd)="addComputer($event)"
+  (onItemEdit)="editComputer($event)"
+  (onItemRemove)="removeComputer($event)"
 ></app-common-table>

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { GridDataResult } from '@progress/kendo-angular-grid';
 import { Observable } from 'rxjs';
+import { User } from 'src/app/shared/interfaces';
 import { GetDataService } from '../get-data.service';
 
 @Injectable({providedIn: 'root'})
@@ -9,7 +9,7 @@ export class UsersService {
 
     constructor(private getDataService: GetDataService) {}
 
-    public getUsers(from: number, to: number): Observable<GridDataResult> {
-        return this.getDataService.get(this.URL, from, to);
+    public getUsers(): Observable<User[]> {
+        return this.getDataService.get(this.URL);
     }
 }

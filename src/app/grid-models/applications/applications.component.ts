@@ -1,17 +1,19 @@
-import { Component, ChangeDetectionStrategy } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
-import { tap } from 'rxjs/operators';
-import { GridColumn } from 'src/app/shared/interfaces'
+import { Component, ChangeDetectionStrategy, ViewChild, TemplateRef, OnInit, AfterViewInit } from '@angular/core';
+import { AddEvent, RemoveEvent, SaveEvent } from '@progress/kendo-angular-grid';
+import { BehaviorSubject } from 'rxjs';
+import { Application, GridColumn } from 'src/app/shared/interfaces'
 import { ApplicationsService } from './applications.service';
-import { GridDataResult } from '@progress/kendo-angular-grid';
-import { State } from '@progress/kendo-data-query';
 
 @Component({
   selector: 'app-applications',
   templateUrl: './applications.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ApplicationsComponent {
+export class ApplicationsComponent implements OnInit {
+  public applications: Application[] = [];
+  public applications$ = new BehaviorSubject<Application[]>([]);
+  public loading$ = new BehaviorSubject<boolean>(false);
+
   public columnConfig: GridColumn[] = [
     { alias: 'name', title: 'Name' },
     { alias: 'arch', title: 'Architecture' },
@@ -19,19 +21,32 @@ export class ApplicationsComponent {
     { alias: 'size', title: 'Size', hidden: true },
   ];
 
-  public loading$ = new BehaviorSubject<boolean>(false);
-  public currentData$ = this.takeApplications(0, 5);
-
   constructor(private service: ApplicationsService) {}
 
-  public pageChanged(state: State): void {
-    this.currentData$ = this.takeApplications(state.skip || 0, state.take || 0);
+  public ngOnInit(): void {
+    this.loading$.next(true);
+    this.service.getApplications().subscribe((applications: Application[]) => {
+      this.applications = applications;
+      this.applications$.next(applications);
+      this.loading$.next(false);
+    });
   }
 
-  public takeApplications(from: number, to: number): Observable<GridDataResult> {
-    this.loading$.next(true);
-    return this.service.getApplications(from, to).pipe(
-      tap(() => this.loading$.next(false))
-    );
+  public addApplication(event: AddEvent): void {
+    this.applications = [event.dataItem, ...this.applications];
+    this.applications$.next(this.applications);    
+  }
+
+  public editApplication(event: SaveEvent): void {
+    const currentApplication: Application = event.dataItem;
+    const editedApplication: Application = event.formGroup.value;
+
+    this.applications = this.applications.map((application: Application) => application === currentApplication ? editedApplication : application);
+    this.applications$.next(this.applications);
+  }
+
+  public removeApplication(event: RemoveEvent): void {
+    this.applications = this.applications.filter((application: Application) => application !== event.dataItem);
+    this.applications$.next(this.applications);
   }
 }

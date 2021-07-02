@@ -1,6 +1,6 @@
 <app-common-table
   [columnConfig]="columnConfig"
-  [data]="currentData$ | async"
+  [data]="users$ | async"
   [gridHeight]="540"
   [pageSize]="5"
   [pageable]="{
@@ -13,7 +13,12 @@
   [resizable]="false"
   [reorderable]="false"
   [loading]="loading$ | async"
-  (pageChanged)="pageChanged($event)"
+  [editable]="true"
+  [removable]="true"
+  [canCreate]="true"
+  (onItemAdd)="addUser($event)"
+  (onItemEdit)="editUser($event)"
+  (onItemRemove)="removeUser($event)"
 ></app-common-table>
 
 <ng-template #ratingTemplate let-rating="item">

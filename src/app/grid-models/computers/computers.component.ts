@@ -1,50 +1,47 @@
-import { Component, ChangeDetectionStrategy } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { Component, ChangeDetectionStrategy, ViewChild, TemplateRef, OnInit, AfterViewInit } from '@angular/core';
+import { AddEvent, RemoveEvent, SaveEvent } from '@progress/kendo-angular-grid';
+import { BehaviorSubject } from 'rxjs';
+import { Computer } from 'src/app/shared/interfaces'
 import { ComputersService } from './computers.service';
-import { GridDataResult } from '@progress/kendo-angular-grid';
-import { State } from '@progress/kendo-data-query';
-import { GridColumn } from 'src/app/shared/interfaces';
 
 @Component({
   selector: 'app-computers',
   templateUrl: './computers.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ComputersComponent {
-  public columnConfig$ = this.service.getColumnConfig();
+export class ComputersComponent implements OnInit {
+  public computers: Computer[] = [];
+  public computers$ = new BehaviorSubject<Computer[]>([]);
   public loading$ = new BehaviorSubject<boolean>(false);
-  public currentData$ = this.takeComputers(0, 5);
 
-  public columnConfig: GridColumn[] = [
-    { alias: 'name', title: "Name" },
-    {
-      alias: 'os',
-      title: "OS",
-      customFilter: {
-        dictionary: [
-          { name: 'Windows 7'},
-          { name: 'Windows 8'},
-          { name: 'Windows 8.1'},
-          { name: 'Windows 10'} 
-        ]
-      }
-    },
-    { alias: 'arch', title: "Architecture" },
-    { alias: 'ram', title: "RAM" },
-    { alias: 'cpu', title: "CPU" },
-  ];
+  public columnConfig$ = this.service.getColumnConfig();
 
   constructor(private service: ComputersService) {}
 
-  public pageChanged(state: State): void {
-    this.currentData$ = this.takeComputers(state.skip || 0, state.take || 0);
+  public ngOnInit(): void {
+    this.loading$.next(true);
+    this.service.getComputers().subscribe((computers: Computer[]) => {
+      this.computers = computers;
+      this.computers$.next(computers);
+      this.loading$.next(false);
+    });
   }
 
-  public takeComputers(from: number, to: number): Observable<GridDataResult> {
-    this.loading$.next(true);
-    return this.service.getComputers(from, to).pipe(
-      tap(() => this.loading$.next(false))
-    );
+  public addComputer(event: AddEvent): void {
+    this.computers = [event.dataItem, ...this.computers];
+    this.computers$.next(this.computers);    
+  }
+
+  public editComputer(event: SaveEvent): void {
+    const currentComputer: Computer = event.dataItem;
+    const editedComputer: Computer = event.formGroup.value;
+
+    this.computers = this.computers.map((computer: Computer) =>computer === currentComputer ? editedComputer : computer);
+    this.computers$.next(this.computers);
+  }
+
+  public removeComputer(event: RemoveEvent): void {
+    this.computers = this.computers.filter((computer: Computer) => computer !== event.dataItem);
+    this.computers$.next(this.computers);
   }
 }

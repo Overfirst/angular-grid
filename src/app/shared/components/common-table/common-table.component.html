@@ -10,7 +10,12 @@
   [reorderable]="false"
   [loading]="_loading"
   [sort]="sort"
-  (pageChanged)="pageChange($event)"
+  [editable]="editable"
+  [removable]="removable"
+  [canCreate]="canCreate"
+  (onItemEdit)="editHandler($event)"
+  (onItemAdd)="addHandler($event)"
+  (onItemRemove)="removeHandler($event)"
 ></app-common-grid>
 
 <ng-template #textTemplate let-element="item">

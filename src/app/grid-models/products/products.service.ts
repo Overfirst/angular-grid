@@ -1,10 +1,8 @@
 import { Injectable } from '@angular/core';
-import { GridDataResult } from '@progress/kendo-angular-grid';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
-import { State, toODataString } from '@progress/kendo-data-query';
-import { AzureHttpResponse } from 'src/app/shared/interfaces';
+import { AzureHttpResponse, Product } from 'src/app/shared/interfaces';
 
 @Injectable({providedIn: 'root'})
 export class ProductsService {
@@ -12,20 +10,11 @@ export class ProductsService {
 
     constructor(private http: HttpClient) {}
 
-    public getProducts(from: number, to: number): Observable<GridDataResult> {
-        const state: State = { skip: from, take: to };
-        const query = `${toODataString(state)}&$count=true`;
-
-        return this.http.get(`${this.URL}?${query}`).pipe(
+    public getProducts(): Observable<Product[]> {
+        return this.http.get<AzureHttpResponse>(this.URL).pipe(
             map((response: AzureHttpResponse) => {
-                const result: GridDataResult = {
-                    data: response.value || [],
-                    total: +(response['@odata.count'] || 0)
-                };
-                
-                console.log(response);
-
-                return result;
+                const products: Product[] = [...response.value!];
+                return products;
             })
         );
     }

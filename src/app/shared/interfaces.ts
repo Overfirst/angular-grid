@@ -1,5 +1,6 @@
-import { TemplateRef } from "@angular/core";
-import { Observable } from "rxjs";
+import { TemplateRef } from '@angular/core';
+import { ValidatorFn } from '@angular/forms';
+import { Observable } from 'rxjs';
 
 export interface User {
     name: string;
@@ -24,6 +25,13 @@ export interface Application {
     installDate: Date;    
 }
 
+export interface Product {
+    id: number;
+    name: string;
+    inStock: number;
+    cost: number;
+}
+
 export interface GridColumn {
     alias: string;
     title?: string;
@@ -40,6 +48,8 @@ export interface GridColumn {
     filterable?: boolean;
     template?: TemplateRef<HTMLElement>;
     customTemplate?: TemplateRef<HTMLElement>;
+
+    validators?: ValidatorFn[];
 }
 
 export interface AzureHttpResponse {

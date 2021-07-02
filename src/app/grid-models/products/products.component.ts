@@ -1,18 +1,18 @@
-import { Component, ChangeDetectionStrategy, ViewChild, TemplateRef, AfterViewInit } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
-import { tap } from 'rxjs/operators';
-import { GridColumn } from 'src/app/shared/interfaces'
+import { Component, ChangeDetectionStrategy, ViewChild, TemplateRef, OnInit, AfterViewInit } from '@angular/core';
+import { AddEvent, RemoveEvent, SaveEvent } from '@progress/kendo-angular-grid';
+import { BehaviorSubject } from 'rxjs';
+import { GridColumn, Product } from 'src/app/shared/interfaces'
 import { ProductsService } from './products.service';
-import { GridDataResult } from '@progress/kendo-angular-grid';
-import { State } from '@progress/kendo-data-query';
 
 @Component({
   selector: 'app-products',
   templateUrl: './products.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ProductsComponent implements AfterViewInit {
-  @ViewChild('priceTemplate') public priceTemplate: TemplateRef<HTMLElement>;
+export class ProductsComponent implements OnInit {
+  public products: Product[] = [];
+  public products$ = new BehaviorSubject<Product[]>([]);
+  public loading$ = new BehaviorSubject<boolean>(false);
 
   public columnConfig: GridColumn[] = [
     { alias: 'ProductID', title: 'Product ID' },
@@ -21,27 +21,32 @@ export class ProductsComponent implements AfterViewInit {
     { alias: 'UnitsInStock', title: 'Units in stock' },
   ];
 
-  public ngAfterViewInit(): void {
-    const columnPrice = this.columnConfig.find(column => column.alias === 'UnitPrice');
-
-    if (columnPrice) {
-      columnPrice.customTemplate = this.priceTemplate;
-    }
-  }
-
-  public loading$ = new BehaviorSubject<boolean>(false);
-  public currentData$ = this.takeProducts(0, 5);
-
   constructor(private service: ProductsService) {}
 
-  public pageChanged(state: State): void {
-    this.currentData$ = this.takeProducts(state.skip || 0, state.take || 0);
+  public ngOnInit(): void {
+    this.loading$.next(true);
+    this.service.getProducts().subscribe((products: Product[]) => {
+      this.products = products;
+      this.products$.next(products);
+      this.loading$.next(false);
+    });
   }
 
-  public takeProducts(from: number, to: number): Observable<GridDataResult> {
-    this.loading$.next(true);
-    return this.service.getProducts(from, to).pipe(
-      tap(() => this.loading$.next(false))
-    );
+  public addProduct(event: AddEvent): void {
+    this.products = [event.dataItem, ...this.products];
+    this.products$.next(this.products);    
+  }
+
+  public editProduct(event: SaveEvent): void {
+    const currentProduct: Product = event.dataItem;
+    const editedProduct: Product = event.formGroup.value;
+
+    this.products = this.products.map((product: Product) => product === currentProduct ? editedProduct : product);
+    this.products$.next(this.products);
+  }
+
+  public removeProduct(event: RemoveEvent): void {
+    this.products = this.products.filter((product: Product) => product !== event.dataItem);
+    this.products$.next(this.products);
   }
 }

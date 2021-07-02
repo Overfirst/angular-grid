@@ -1,5 +1,5 @@
 <kendo-grid
-    [data]="gridData"
+    [kendoGridBinding]="gridData"
     [sortable]="sortable && !_loading"
     [pageable]="pageable"
     [filterable]="filterable && !_loading"
@@ -9,13 +9,19 @@
     [height]="gridHeight"
     [loading]="_loading"
     [sort]="sort"
-    [filter]="state.filter || defaultFilter"
-    [skip]="resolveDefault(state.skip, 0)"
-    [pageSize]="resolveDefault(state.take, 5)"
-    (pageChange)="pageChange($event)"
-    (sortChange)="sortChange($event)"
-    (filterChange)="filterChange($event)"
+    [filter]="defaultFilter"
+    [pageSize]="resolveDefault(pageSize, 5)"
+
+    (edit)="editHandler($event)"
+    (cancel)="cancelHandler($event)"
+    (save)="saveHandler($event)"
+    (add)="addHandler($event)"
+    (remove)="removeHandler($event)"
   >
+    <ng-template *ngIf="canCreate && !_loading" kendoGridToolbarTemplate>
+      <button kendoGridAddCommand>Add new</button>
+    </ng-template>
+
     <kendo-grid-column
       *ngFor="let column of _columnConfig"
       [field]="column.alias"
@@ -26,20 +32,31 @@
       [filterable]="resolveDefault(column.filterable, true)"
       [filter]="resolveDefault(column.filter, 'text')"
     >
-    <ng-container *ngIf="column.customFilter">
-      <ng-container *ngIf="resolveDictionary(column) | async as dictionary">
-        <ng-template kendoGridFilterCellTemplate let-filter>
-          <app-dropdown-filter
-            [filter]="filter"
-            [data]="dictionary"
-            [valueField]="column.alias"
-          ></app-dropdown-filter>
-        </ng-template>
+      <ng-container *ngIf="column.customFilter">
+        <ng-container *ngIf="resolveDictionary(column) | async as dictionary">
+          <ng-template kendoGridFilterCellTemplate let-filter>
+            <app-dropdown-filter
+              [filter]="filter"
+              [data]="dictionary"
+              [valueField]="column.alias"
+            ></app-dropdown-filter>
+          </ng-template>
+        </ng-container>
       </ng-container>
-    </ng-container>
 
-    <ng-template kendoGridCellTemplate let-item>
-        <ng-container *ngTemplateOutlet="column.customTemplate || column.template || null; context: {item: item[column.alias]}"></ng-container>
-    </ng-template>
+      <ng-template kendoGridCellTemplate let-item>
+          <ng-container *ngTemplateOutlet="column.customTemplate || column.template || null; context: {item: item[column.alias]}"></ng-container>
+      </ng-template>
     </kendo-grid-column>
+
+    <kendo-grid-command-column *ngIf="editable || removable" title="Commands">
+      <ng-template kendoGridCellTemplate let-isNew="isNew">
+        <button *ngIf="editable" kendoGridEditCommand [primary]="true">Edit</button>
+        <button *ngIf="removable" kendoGridRemoveCommand>Remove</button>
+
+        <!-- [disabled]="formGroup?.invalid" -->
+        <button kendoGridSaveCommand>{{ isNew ? "Add" : "Update" }}</button>
+        <button kendoGridCancelCommand>{{ isNew ? "Discard changes" : "Cancel" }}</button>
+      </ng-template>
+    </kendo-grid-command-column>
 </kendo-grid>
