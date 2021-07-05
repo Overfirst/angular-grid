@@ -1,61 +1,148 @@
 <kendo-grid
-    [kendoGridBinding]="gridData"
-    [sortable]="sortable && !_loading"
-    [pageable]="pageable"
-    [filterable]="filterable && !_loading"
-    [groupable]="groupable"
-    [reorderable]="reorderable"
-    [resizable]="resizable"
-    [height]="gridHeight"
-    [loading]="_loading"
-    [sort]="sort"
-    [filter]="defaultFilter"
-    [pageSize]="resolveDefault(pageSize, 5)"
+  [kendoGridBinding]="gridData"
+  [sortable]="sortable && !_loading && !configuratorOpened"
+  [pageable]="pageable"
+  [filterable]="filterable && !_loading && !configuratorOpened"
+  [groupable]="groupable"
+  [reorderable]="reorderable"
+  [resizable]="resizable"
+  [height]="gridHeight"
+  [loading]="_loading"
+  [sort]="sort"
+  [filter]="defaultFilter"
+  [pageSize]="resolveDefault(pageSize, 5)"
+  (edit)="editHandler($event)"
+  (cancel)="cancelHandler($event)"
+  (save)="saveHandler($event)"
+  (add)="addHandler($event)"
+  (remove)="removeHandler($event)"
+>
 
-    (edit)="editHandler($event)"
-    (cancel)="cancelHandler($event)"
-    (save)="saveHandler($event)"
-    (add)="addHandler($event)"
-    (remove)="removeHandler($event)"
+  <!-- Toolbar buttons: New row & Configurator -->
+
+  <ng-template kendoGridToolbarTemplate>
+    <button 
+      kendoGridAddCommand
+      [disabled]="_loading || nowEdits"
+    >
+      <span class="k-icon k-i-plus"></span>
+      <span>New row</span>
+    </button>
+
+    <button
+      *ngIf="allowConfigurator"
+      class="k-button"
+      [disabled]="_loading || nowEdits"
+      (click)="configuratorOpened = !configuratorOpened"
+    >
+      <span *ngIf="!configuratorOpened; else apply" class="k-icon k-i-gear k-i-cog k-i-custom"></span>
+      <ng-template #apply>
+        <span class="k-icon k-i-check k-i-checkmark"></span>
+      </ng-template>
+      <span>{{ configuratorOpened ? 'Apply' : 'View settings' }}</span>
+    </button>
+  </ng-template>
+
+  <!-- Data columns -->
+
+  <kendo-grid-column
+    *ngFor="let column of _columnConfig"
+    [field]="column.alias"
+    [autoSize]="false"
+    [title]="resolveDefault(column.title, column.alias)"
+    [width]="resolveDefault(column.width, 300)"
+    [hidden]="configuratorOpened ? false : resolveDefault(column.hidden, false)"
+    [filterable]="resolveDefault(column.filterable, true)"
+    [filter]="resolveDefault(column.filter, 'text')"
   >
-    <ng-template *ngIf="canCreate && !_loading" kendoGridToolbarTemplate>
-      <button kendoGridAddCommand>Add new</button>
+    <ng-template kendoGridHeaderTemplate>
+      <div class="header_box">
+        <div>{{ resolveDefault(column.title, column.alias) }}</div>
+
+        <div class="configurator_box" *ngIf="configuratorOpened">
+          <div class="section">
+            <span>Locked</span>
+            <input
+              kendoCheckBox
+              type="checkbox"
+            >
+          </div>
+  
+          <div class="section">
+            <span>Hidden</span>
+            <input
+              kendoCheckBox
+              type="checkbox"
+              value="1"
+              [(ngModel)]="column.hidden"
+            >
+          </div>
+        </div>
+      </div>
     </ng-template>
 
-    <kendo-grid-column
-      *ngFor="let column of _columnConfig"
-      [field]="column.alias"
-      [autoSize]="false"
-      [title]="resolveDefault(column.title, column.alias)"
-      [width]="resolveDefault(column.width, 300)"
-      [hidden]="resolveDefault(column.hidden, false)"
-      [filterable]="resolveDefault(column.filterable, true)"
-      [filter]="resolveDefault(column.filter, 'text')"
-    >
-      <ng-container *ngIf="column.customFilter">
-        <ng-container *ngIf="resolveDictionary(column) | async as dictionary">
-          <ng-template kendoGridFilterCellTemplate let-filter>
-            <app-dropdown-filter
-              [filter]="filter"
-              [data]="dictionary"
-              [valueField]="column.alias"
-            ></app-dropdown-filter>
-          </ng-template>
-        </ng-container>
+    <ng-template kendoGridToolbarTemplate>
+      <button 
+        kendoGridAddCommand
+        [disabled]="_loading || nowEdits"
+      >
+      <span class="k-icon k-i-plus"></span>
+      <span>New row</span>
+     </button>
+    </ng-template>
+
+    <ng-container *ngIf="column.customFilter">
+      <ng-container *ngIf="resolveDictionary(column) | async as dictionary">
+        <ng-template kendoGridFilterCellTemplate let-filter>
+          <app-dropdown-filter
+            [filter]="filter"
+            [data]="dictionary"
+            [valueField]="column.alias"
+          ></app-dropdown-filter>
+        </ng-template>
       </ng-container>
+    </ng-container>
+    <ng-template
+      kendoGridCellTemplate
+      let-item
+    >
+      <ng-container *ngTemplateOutlet="column.customTemplate || column.template || null; context: {item: item[column.alias]}"></ng-container>
+    </ng-template>
+  </kendo-grid-column>
 
-      <ng-template kendoGridCellTemplate let-item>
-          <ng-container *ngTemplateOutlet="column.customTemplate || column.template || null; context: {item: item[column.alias]}"></ng-container>
-      </ng-template>
-    </kendo-grid-column>
+  <!-- Command column -->
+  
+  <kendo-grid-command-column *ngIf="editable || removable" title="Commands">
+    <ng-template kendoGridHeaderTemplate>
+      <div class="header_box">
+        <div>Commands</div>
 
-    <kendo-grid-command-column *ngIf="editable || removable" title="Commands">
-      <ng-template kendoGridCellTemplate let-isNew="isNew">
-        <button *ngIf="editable" kendoGridEditCommand [primary]="true">Edit</button>
-        <button *ngIf="removable" kendoGridRemoveCommand>Remove</button>
+        <div class="configurator_box" *ngIf="configuratorOpened">
+          <div class="section">
+            <span>Locked</span>
+            <input
+              kendoCheckBox
+              type="checkbox"
+            >
+          </div>
+  
+          <div class="section">
+            <span>Hidden</span>
+            <input
+              kendoCheckBox
+              type="checkbox"
+              value="1"
+            >
+          </div>
+        </div>
+      </div>
+    </ng-template>
 
-        <button kendoGridSaveCommand [disabled]="formGroup?.invalid || false">{{ isNew ? "Add" : "Update" }}</button>
-        <button kendoGridCancelCommand>{{ isNew ? "Discard changes" : "Cancel" }}</button>
-      </ng-template>
-    </kendo-grid-command-column>
+    <ng-template kendoGridCellTemplate let-isNew="isNew">
+      <button *ngIf="editable" kendoGridEditCommand [primary]="true" [disabled]="configuratorOpened">Edit</button>
+      <button *ngIf="removable" kendoGridRemoveCommand [disabled]="configuratorOpened">Remove</button>
+      <button kendoGridSaveCommand [disabled]="formGroup?.invalid || configuratorOpened">{{ isNew ? "Add" : "Update" }}</button>
+      <button kendoGridCancelCommand>{{ isNew ? "Discard changes" : "Cancel" }}</button>
+    </ng-template>
+  </kendo-grid-command-column>
 </kendo-grid>

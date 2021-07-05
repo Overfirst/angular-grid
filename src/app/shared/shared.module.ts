@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import {
     GridModule,
@@ -10,8 +11,10 @@ import {
 
 import { DropDownListModule } from '@progress/kendo-angular-dropdowns';
 import { InputsModule } from '@progress/kendo-angular-inputs';
+
 import { RatingComponent } from './components/rating/rating.component';
 import { DropDownListFilterComponent } from './components/dropdown-filter/dropdown-filter.component';
+import { CommonGridConfiguratorComponent } from './components/common-grid-configurator/common-grid-configurator.component';
 
 @NgModule({
     imports: [
@@ -21,11 +24,14 @@ import { DropDownListFilterComponent } from './components/dropdown-filter/dropdo
         PDFModule,
         ExcelModule,
         InputsModule,
-        DropDownListModule
+        DropDownListModule,
+        FormsModule,
+        ReactiveFormsModule
     ],
     declarations: [
       RatingComponent,
-      DropDownListFilterComponent
+      DropDownListFilterComponent,
+      CommonGridConfiguratorComponent
     ],
     exports: [
         CommonModule,
@@ -34,9 +40,12 @@ import { DropDownListFilterComponent } from './components/dropdown-filter/dropdo
         PDFModule,
         ExcelModule,
         InputsModule,
+        FormsModule,
+        ReactiveFormsModule,
         DropDownListModule,
         RatingComponent,
-        DropDownListFilterComponent
+        DropDownListFilterComponent,
+        CommonGridConfiguratorComponent
     ]
 })
 export class SharedModule {}

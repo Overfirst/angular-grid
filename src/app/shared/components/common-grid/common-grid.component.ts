@@ -8,6 +8,7 @@ import { AbstractControl, FormControl, FormGroup, Validators } from '@angular/fo
 @Component({
   selector: 'app-common-grid',
   templateUrl: './common-grid.component.html',
+  styleUrls: ['./common-grid.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CommonGridComponent {
@@ -22,6 +23,8 @@ export class CommonGridComponent {
   };
 
   public formGroup: FormGroup;
+  public configuratorOpened = false;
+  public nowEdits = false;
 
   @Input() public gridHeight = 900;
   @Input() public pageSize = 20;
@@ -37,6 +40,7 @@ export class CommonGridComponent {
   @Input() public editable = false;
   @Input() public removable = false;
   @Input() public canCreate = false;
+  @Input() public allowConfigurator = true;
 
   @Input() public set columnConfig(config: GridColumn[]) {
     this._columnConfig  = config;
@@ -92,10 +96,12 @@ export class CommonGridComponent {
     this.formGroup = new FormGroup(controls);
     this.editedRowIndex = event.rowIndex;
     event.sender.editRow(event.rowIndex, this.formGroup);
+    this.nowEdits = true;
   }
 
   public cancelHandler(event: CancelEvent): void {
     this.closeEditor(event.sender, event.rowIndex);
+    this.nowEdits = false;
   }
 
   public saveHandler(event: SaveEvent): void {
@@ -106,6 +112,7 @@ export class CommonGridComponent {
     }
 
     this.closeEditor(event.sender);
+    this.nowEdits = false;
   }
 
   public addHandler(event: AddEvent): void {
@@ -123,6 +130,7 @@ export class CommonGridComponent {
 
     this.formGroup = new FormGroup(controls);
     sender.addRow(this.formGroup);
+    this.nowEdits = true;
   }
 
   public removeHandler(event: RemoveEvent): void {

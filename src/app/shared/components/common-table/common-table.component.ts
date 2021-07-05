@@ -29,6 +29,7 @@ export class CommonTableComponent implements AfterViewInit {
   @Input() public editable = false;
   @Input() public removable = false;
   @Input() public canCreate = false;
+  @Input() public allowConfigurator = true;
 
   public _columnConfig: GridColumn[] = [];
 
