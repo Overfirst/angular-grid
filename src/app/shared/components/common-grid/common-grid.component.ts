@@ -114,8 +114,11 @@ export class CommonGridComponent {
 
     const controls: { [key: string]: AbstractControl } = {};
 
-    this._columnConfig.forEach((column: GridColumn) =>
-      controls[column.alias] = new FormControl('', column.validators)
+    this._columnConfig.forEach((column: GridColumn) => {
+        if (!column.hidden) {
+          controls[column.alias] = new FormControl('', column.validators)
+        }
+      }
     );
 
     this.formGroup = new FormGroup(controls);
