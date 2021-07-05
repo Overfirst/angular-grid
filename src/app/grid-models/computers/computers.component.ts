@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy, ViewChild, TemplateRef, OnInit, AfterViewInit } from '@angular/core';
+import { Component, ChangeDetectionStrategy, OnInit } from '@angular/core';
 import { AddEvent, RemoveEvent, SaveEvent } from '@progress/kendo-angular-grid';
 import { BehaviorSubject } from 'rxjs';
 import { Computer } from 'src/app/shared/interfaces'

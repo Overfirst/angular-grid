@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
-import { map, delay, switchMap } from 'rxjs/operators';
+import { delay, switchMap } from 'rxjs/operators';
 import { GridColumn } from '../shared/interfaces';
 
 @Injectable({providedIn: 'root'})

@@ -1,7 +1,7 @@
 import { Component, ChangeDetectionStrategy, ViewChild, Input, Output, EventEmitter, AfterViewInit } from '@angular/core';
 import { AddEvent, PagerSettings, RemoveEvent, SaveEvent } from '@progress/kendo-angular-grid';
 import { GridColumn } from '../../interfaces';
-import { SortDescriptor, State } from '@progress/kendo-data-query';
+import { SortDescriptor } from '@progress/kendo-data-query';
 import { TemplateRef } from '@angular/core';
 
 @Component({

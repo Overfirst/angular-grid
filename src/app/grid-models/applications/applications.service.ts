@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { GridDataResult } from '@progress/kendo-angular-grid';
 import { Observable } from 'rxjs';
 import { Application } from 'src/app/shared/interfaces';
 import { GetDataService } from '../get-data.service';
