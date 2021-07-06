@@ -1,9 +1,10 @@
-import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter } from '@angular/core';
-import { AddEvent, CancelEvent, EditEvent, GridComponent, PagerSettings, RemoveEvent, SaveEvent } from '@progress/kendo-angular-grid';
+import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter, OnInit, ViewChild, TemplateRef, AfterViewInit } from '@angular/core';
+import { AddEvent, CancelEvent, ColumnResizeArgs, EditEvent, GridComponent, PagerSettings, RemoveEvent, SaveEvent } from '@progress/kendo-angular-grid';
 import { GridColumn } from 'src/app/shared/interfaces';
 import { CompositeFilterDescriptor, SortDescriptor } from '@progress/kendo-data-query';
 import { Observable, of } from 'rxjs';
 import { AbstractControl, FormControl, FormGroup, Validators } from '@angular/forms';
+import { ConfiguratorService } from './configurator.service';
 
 @Component({
   selector: 'app-common-grid',
@@ -11,11 +12,12 @@ import { AbstractControl, FormControl, FormGroup, Validators } from '@angular/fo
   styleUrls: ['./common-grid.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class CommonGridComponent {
+export class CommonGridComponent implements OnInit {
   public gridData: any[];
 
   public _loading = false;
   public _columnConfig: GridColumn[] = [];
+  public selectedView = 'Default';
 
   public defaultFilter: CompositeFilterDescriptor = {
     logic: 'and',
@@ -25,25 +27,33 @@ export class CommonGridComponent {
   public formGroup: FormGroup;
   public configuratorOpened = false;
   public nowEdits = false;
+  public editedRowIndex = 0;
+
+  @ViewChild('viewsDropDownList') viewsDropDownList: TemplateRef<any>;
+  
+  constructor(public service: ConfiguratorService) {}
 
   @Input() public gridHeight = 900;
   @Input() public pageSize = 20;
+
   @Input() public sortable = true;
   @Input() public filterable = true;
-  @Input() public pageable: boolean | PagerSettings = true;
   @Input() public groupable = true;
   @Input() public reorderable = true;
   @Input() public resizable = true;
   @Input() public searchable = true;
-  @Input() public sort: SortDescriptor[] = [];
-
   @Input() public editable = false;
   @Input() public removable = false;
   @Input() public canCreate = false;
   @Input() public allowConfigurator = true;
 
+  @Input() public sort: SortDescriptor[] = [];
+  @Input() public pageable: boolean | PagerSettings = true;
+  @Input() public gridID: string | null = null;
+
   @Input() public set columnConfig(config: GridColumn[]) {
-    this._columnConfig  = config;
+    this._columnConfig = config;
+    console.log(config);
 
     this._columnConfig.forEach(column => {
       if (!column.validators) {
@@ -54,7 +64,7 @@ export class CommonGridComponent {
         column.validators.push(Validators.required);
       }
     });
-  } 
+  }
 
   @Input() public set loading(isLoading: boolean | null) {
     this._loading = isLoading !== null ? isLoading : false;
@@ -70,6 +80,12 @@ export class CommonGridComponent {
   @Output() public onItemRemove = new EventEmitter<RemoveEvent>();
   @Output() public onItemAdd = new EventEmitter<AddEvent>();
 
+  public ngOnInit(): void {
+    if (this.gridID) {
+      this.service.setDefaultConfig(this.gridID, this._columnConfig);
+    }
+  }
+
   public resolveDefault<T>(value: T | undefined, defaultValue: T): T {
     if (value === undefined) {
       return defaultValue;
@@ -82,16 +98,14 @@ export class CommonGridComponent {
     return column.customFilter!.dictionary$ || of(column.customFilter!.dictionary || []);
   }
 
-  public editedRowIndex = 0;
-
   public editHandler(event: EditEvent): void {
     this.closeEditor(event.sender);
 
     const controls: { [key: string]: AbstractControl } = {};
 
-    this._columnConfig.forEach((column: GridColumn) => {
+    this._columnConfig.forEach((column: GridColumn) =>
       controls[column.alias] = new FormControl(event.dataItem[column.alias], column.validators)
-    });
+    );
 
     this.formGroup = new FormGroup(controls);
     this.editedRowIndex = event.rowIndex;
@@ -122,11 +136,10 @@ export class CommonGridComponent {
     const controls: { [key: string]: AbstractControl } = {};
 
     this._columnConfig.forEach((column: GridColumn) => {
-        if (!column.hidden) {
-          controls[column.alias] = new FormControl('', column.validators)
-        }
+      if (!column.hidden) {
+        controls[column.alias] = new FormControl('', column.validators)
       }
-    );
+    });
 
     this.formGroup = new FormGroup(controls);
     sender.addRow(this.formGroup);
@@ -137,8 +150,39 @@ export class CommonGridComponent {
     this.onItemRemove.emit(event);
   }
 
+  public columnResize(args: ColumnResizeArgs[]): void {
+    const newWidths = args.map(arg => arg.newWidth);
+    const columns = args.map(arg => arg.column);
+
+    columns.forEach((column: any, index) => {
+      const needColumn = this._columnConfig.find(col => col.alias === column.field);
+      
+      if (needColumn) {
+        needColumn.width = newWidths[index];
+      }
+    });
+  }
+
   public closeEditor(grid: GridComponent, rowIndex: number = this.editedRowIndex): void {
     grid.closeRow(rowIndex);
     this.editedRowIndex = -1;
+  }
+
+  public viewSelectionChanged(view: string): void {
+    this.selectedView = view;
+    this.columnConfig = this.service.loadConfig(this.gridID!, view);
+  }
+
+  public getViews(): string[] {
+    return this.service.getViews(this.gridID!);
+  }
+
+  public createNewView(): void {
+    this.selectedView = this.service.createNewView(this.gridID!);
+    this.columnConfig = this.service.loadConfig(this.gridID!, this.selectedView);
+  }
+
+  public viewIsDefault(): boolean {
+    return this.selectedView === 'Default';
   }
 }

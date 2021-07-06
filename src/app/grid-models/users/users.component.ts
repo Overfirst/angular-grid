@@ -12,6 +12,7 @@ import { UsersService } from './users.service';
 })
 export class UsersComponent implements OnInit, AfterViewInit {
   @ViewChild('ratingTemplate') ratingTemplate: TemplateRef<HTMLElement>; 
+  public readonly GRID_ID = 'USERS';
 
   public columnConfig: GridColumn[] = [
     { alias: 'name', title: 'Name' },
