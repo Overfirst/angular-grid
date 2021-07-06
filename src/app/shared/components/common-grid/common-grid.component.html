@@ -61,6 +61,18 @@
        <span>New view</span>
      </button>
 
+     <!-- Remove current view -->
+ 
+     <button
+       *ngIf="false"
+       [disabled]="_loading || viewIsDefault()"
+       class="k-button"
+       (click)="removeCurrentView()"
+     >
+       <span class="k-icon k-i-minus"></span>
+       <span>Remove current view</span>
+     </button>
+
     <kendo-grid-spacer></kendo-grid-spacer>
 
     <!-- New row -->

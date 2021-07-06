@@ -1,35 +1,28 @@
 import { Injectable } from "@angular/core";
-import { BehaviorSubject } from "rxjs";
-import { GridColumn } from "../../interfaces";
+import { GridColumn, GridColumnSimple, GridViewPair } from "../../interfaces";
 
 @Injectable({providedIn: 'root'})
 export class ConfiguratorService {
-  public viewList$ = new BehaviorSubject<string[]>([]);
-  
   public views: { [key: string]: string[] } = {};
-
-  public configs: { [key: string]: {
-      [key: string]: GridColumn[]
-    }
-  } = {};
+  public configs: { [key: string]: { [key: string]: GridColumnSimple[] } } = {};
 
   private readonly VIEWS_KEY = 'GRID_VIEWS';
   private readonly CONFIGS_KEY = 'GRID_CONFIGS';
+  public readonly DEFAULT_KEY = 'Default';
 
-  // constructor() {
-  //   const views = localStorage.getItem(this.VIEWS_KEY);
-  //   const configs = localStorage.getItem(this.CONFIGS_KEY);
+  constructor() {
+    const views = localStorage.getItem(this.VIEWS_KEY);
+    const configs = localStorage.getItem(this.CONFIGS_KEY);
 
-  //   if (views && configs) {
-  //     this.views = JSON.parse(views);
-  //     this.configs = JSON.parse(configs);
-      
-  //     console.log('views:', this.views);
-  //     console.log('configs:', this.configs);
-  //   }
-  // }
+    if (views && configs) {
+      this.views = JSON.parse(views);
+      this.configs = JSON.parse(configs);
+    }
 
-  public loadConfig(gridID: string, item: string): GridColumn[] {
+    this.updateStorage();
+  }
+
+  public loadConfig(gridID: string, item: string): GridColumnSimple[] {
     return this.configs[gridID][item];
   }
 
@@ -38,11 +31,15 @@ export class ConfiguratorService {
       this.views[gridID] = [];
     }
 
-    if (!this.views[gridID].includes('Default')) {
-      this.views[gridID].unshift('Default');
+    if (!this.views[gridID].includes(this.DEFAULT_KEY)) {
+      this.views[gridID].unshift(this.DEFAULT_KEY);
     }
 
-    this.configs[gridID] = { 'Default': config };
+    if (!this.configs[gridID]) {
+      this.configs[gridID] = {};
+    }
+
+    this.configs[gridID][this.DEFAULT_KEY] = this.toSimpleConfig(config);
     this.updateStorage();
   }
 
@@ -50,29 +47,52 @@ export class ConfiguratorService {
     return this.views[gridID];
   }
 
-  public createNewView(gridID: string): string {
+  public createNewView(gridID: string): GridViewPair {
     const viewName = `View ${this.views[gridID].length}`;
-    
+
     this.views[gridID].push(viewName);
-    const defaultConfig = this.configs[gridID]['Default'];
-
-    const newConfig: GridColumn[] = [];
+    const defaultConfig = this.configs[gridID][this.DEFAULT_KEY];
+    const newConfig: GridColumnSimple[] = [...defaultConfig];
     
-    defaultConfig.forEach((column: GridColumn, index) => {
-      const clonedColumn: GridColumn = {...column};
-
-      clonedColumn.validators = defaultConfig[index].validators;
-      newConfig.push(clonedColumn);
-    });
-
     this.configs[gridID][viewName] = newConfig;
     this.updateStorage();    
 
-    return viewName;
+    return { view: viewName, config: newConfig };
+  }
+
+  public removeView(gridID: string, removedView: string): string {
+    this.views[gridID] = this.views[gridID].filter(view => view !== removedView)
+    delete this.configs[gridID][removedView];
+
+    this.updateStorage();
+    return this.DEFAULT_KEY;
+  }
+
+  public updateCurrentView(gridID: string, view: string, config: GridColumn[]): void {
+    this.configs[gridID][view] = this.toSimpleConfig(config)
+    this.updateStorage();
   }
 
   private updateStorage(): void {
-    // localStorage.setItem(this.VIEWS_KEY, JSON.stringify(this.views));
-    // localStorage.setItem(this.CONFIGS_KEY, JSON.stringify(this.configs));
+    localStorage.setItem(this.VIEWS_KEY, JSON.stringify(this.views));
+    localStorage.setItem(this.CONFIGS_KEY, JSON.stringify(this.configs));
+  }
+
+  private toSimpleConfig(config: GridColumn[]): GridColumnSimple[] {
+    const simpleConfig = config.map(col => {
+      const simpleCol = {
+        alias: col.alias,
+        title: col.title,
+        width: col.width,
+        hidden: col.hidden,
+        type: col.type,
+        filter: col.filter,
+        filterable: col.filterable
+      };
+
+      return simpleCol;
+    });
+
+    return simpleConfig;
   }
 }

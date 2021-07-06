@@ -3,57 +3,64 @@ import { ValidatorFn } from '@angular/forms';
 import { Observable } from 'rxjs';
 
 export interface User {
-    name: string;
-    surname: string;
-    email: string;
-    avatar: string;
+  name: string;
+  surname: string;
+  email: string;
+  avatar: string;
 }
 
 export interface Computer {
-    arch: string;
-    name: string;
-    os: string;
-    ram: string;
-    cpu: string;
+  arch: string;
+  name: string;
+  os: string;
+  ram: string;
+  cpu: string;
 }
 
 export interface Application {
-    name: string;
-    arch: string;
-    vendor: string;
-    size: number;
-    installDate: Date;    
+  name: string;
+  arch: string;
+  vendor: string;
+  size: number;
+  installDate: Date;    
 }
 
 export interface Product {
-    id: number;
-    name: string;
-    inStock: number;
-    cost: number;
+  id: number;
+  name: string;
+  inStock: number;
+  cost: number;
 }
 
-export interface GridColumn {
-    alias: string;
-    title?: string;
-    width?: number;
-    hidden?: boolean;
-    type?: 'text' | 'boolean' | 'list' | 'date';
-    filter?: 'text' | 'numeric' | 'boolean' | 'date';
-    
-    customFilter?: {
-        dictionary?: {name: string}[];
-        dictionary$?: Observable<{name: string}[]>;
-    };
+export interface GridColumnSimple {
+  alias: string;
+  title?: string;
+  width?: number;
+  hidden?: boolean;
+  type?: 'text' | 'boolean' | 'list' | 'date';
+  filter?: 'text' | 'numeric' | 'boolean' | 'date';
+  filterable?: boolean;
+}
 
-    filterable?: boolean;
-    template?: TemplateRef<HTMLElement>;
-    customTemplate?: TemplateRef<HTMLElement>;
-
-    validators?: ValidatorFn[];
+export interface GridColumn extends GridColumnSimple {
+  customFilter?: {
+    dictionary?: {name: string}[];
+    dictionary$?: Observable<{name: string}[]>;
+  };
+  
+  template?: TemplateRef<HTMLElement>;
+  customTemplate?: TemplateRef<HTMLElement>;
+  
+  validators?: ValidatorFn[];
 }
 
 export interface AzureHttpResponse {
-    '@odata.context'?: string;
-    '@odata.count'?: number;
-    value?: any[];
+  '@odata.context'?: string;
+  '@odata.count'?: number;
+  value?: any[];
+}
+
+export interface GridViewPair {
+  view: string;
+  config: GridColumnSimple[];
 }

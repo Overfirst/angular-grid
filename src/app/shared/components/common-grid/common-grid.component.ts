@@ -17,7 +17,7 @@ export class CommonGridComponent implements OnInit {
 
   public _loading = false;
   public _columnConfig: GridColumn[] = [];
-  public selectedView = 'Default';
+  public selectedView = this.service.DEFAULT_KEY;
 
   public defaultFilter: CompositeFilterDescriptor = {
     logic: 'and',
@@ -29,8 +29,6 @@ export class CommonGridComponent implements OnInit {
   public nowEdits = false;
   public editedRowIndex = 0;
 
-  @ViewChild('viewsDropDownList') viewsDropDownList: TemplateRef<any>;
-  
   constructor(public service: ConfiguratorService) {}
 
   @Input() public gridHeight = 900;
@@ -53,7 +51,6 @@ export class CommonGridComponent implements OnInit {
 
   @Input() public set columnConfig(config: GridColumn[]) {
     this._columnConfig = config;
-    console.log(config);
 
     this._columnConfig.forEach(column => {
       if (!column.validators) {
@@ -161,6 +158,8 @@ export class CommonGridComponent implements OnInit {
         needColumn.width = newWidths[index];
       }
     });
+
+    this.service.updateCurrentView(this.gridID!, this.selectedView, this._columnConfig);
   }
 
   public closeEditor(grid: GridComponent, rowIndex: number = this.editedRowIndex): void {
@@ -170,7 +169,16 @@ export class CommonGridComponent implements OnInit {
 
   public viewSelectionChanged(view: string): void {
     this.selectedView = view;
-    this.columnConfig = this.service.loadConfig(this.gridID!, view);
+    const loadedConfig = this.service.loadConfig(this.gridID!, view);
+
+    console.log('changed:', loadedConfig);
+
+    this._columnConfig = this._columnConfig.map((column, index) => {
+      const clonedColumn = {...column};
+      const newColumn = loadedConfig[index];
+
+      return {...clonedColumn, ...newColumn};
+    })
   }
 
   public getViews(): string[] {
@@ -178,11 +186,22 @@ export class CommonGridComponent implements OnInit {
   }
 
   public createNewView(): void {
-    this.selectedView = this.service.createNewView(this.gridID!);
-    this.columnConfig = this.service.loadConfig(this.gridID!, this.selectedView);
+    const { view, config } = this.service.createNewView(this.gridID!);
+
+    this.selectedView = view;
+    this._columnConfig = this._columnConfig.map((column, index) => {
+      const clonedColumn = {...column};
+      const newColumn = config[index];
+
+      return {...clonedColumn, ...newColumn};
+    });
+  }
+
+  public removeCurrentView(): void {
+    this.selectedView = this.service.removeView(this.gridID!, this.selectedView);
   }
 
   public viewIsDefault(): boolean {
-    return this.selectedView === 'Default';
+    return this.selectedView === this.service.DEFAULT_KEY;
   }
 }
