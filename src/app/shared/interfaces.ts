@@ -38,6 +38,7 @@ export interface GridColumnSimple {
   title?: string;
   width?: number;
   hidden?: boolean;
+  locked?: boolean;
   type?: 'text' | 'boolean' | 'list' | 'date';
   filter?: 'text' | 'numeric' | 'boolean' | 'date';
   filterable?: boolean;
@@ -70,6 +71,7 @@ export interface GridViewPair {
 }
 
 export interface GridView {
+  name: string;
   config: ColumnsSimpleConfig;
   filter: CompositeFilterDescriptor;
   sort: SortDescriptor[];

@@ -1,6 +1,6 @@
-import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter, OnInit,  } from '@angular/core';
+import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter, OnInit } from '@angular/core';
 import { AddEvent, CancelEvent, ColumnResizeArgs, EditEvent, GridComponent, PagerSettings, RemoveEvent, SaveEvent } from '@progress/kendo-angular-grid';
-import { ColumnsConfig, GridColumn } from 'src/app/shared/interfaces';
+import { ColumnsConfig, GridColumn, GridView } from 'src/app/shared/interfaces';
 import { CompositeFilterDescriptor, SortDescriptor } from '@progress/kendo-data-query';
 import { Observable, of } from 'rxjs';
 import { AbstractControl, FormControl, FormGroup, Validators } from '@angular/forms';
@@ -15,14 +15,20 @@ import { ConfiguratorService } from './configurator.service';
 export class CommonGridComponent implements OnInit {
   public gridData: any[];
 
-  public _loading = false;
-  public _columnConfig: ColumnsConfig = [];
-  public selectedView = this.service.DEFAULT_KEY;
+  private _loading = false;
+  private _columnConfig: ColumnsConfig = [];
+  private _view: GridView;
 
-  public defaultFilter: CompositeFilterDescriptor = {
-    logic: 'and',
-    filters: [],
-  };
+  public set view(view: GridView) {
+    this._view = view;
+    this.columnConfig = this.columnConfig.map((col, idx) => ({...col, ...view.config[idx]}));
+    this.filter = view.filter!;
+    this.sort = view.sort;
+  }
+
+  public get view() {
+    return this._view;
+  }
 
   public formGroup: FormGroup;
   public configuratorOpened = false;
@@ -46,13 +52,19 @@ export class CommonGridComponent implements OnInit {
   @Input() public allowConfigurator = true;
 
   @Input() public sort: SortDescriptor[] = [];
+
+  @Input() public filter: CompositeFilterDescriptor = {
+    logic: 'and',
+    filters: [],
+  };
+
   @Input() public pageable: boolean | PagerSettings = true;
   @Input() public gridID: string | null = null;
 
   @Input() public set columnConfig(config: ColumnsConfig) {
     this._columnConfig = config;
 
-    this._columnConfig.forEach(column => {
+    this.columnConfig.forEach(column => {
       if (!column.validators) {
         column.validators = [];
       }
@@ -60,7 +72,21 @@ export class CommonGridComponent implements OnInit {
       if (!column.validators.includes(Validators.required)) {
         column.validators.push(Validators.required);
       }
+
+      column.width = this.resolveDefault(column.width, 350);
+      column.hidden = this.resolveDefault(column.hidden, false);
+      column.locked = this.resolveDefault(column.locked, false);
     });
+
+    console.log('columnConfig set:', this.columnConfig);
+  }
+
+  public get columnConfig() {
+    return this._columnConfig;
+  }
+
+  public get loading() {
+    return this._loading;
   }
 
   @Input() public set loading(isLoading: boolean | null) {
@@ -78,9 +104,16 @@ export class CommonGridComponent implements OnInit {
   @Output() public onItemAdd = new EventEmitter<AddEvent>();
 
   public ngOnInit(): void {
-    if (this.gridID) {
-      this.service.setDefaultConfig(this.gridID, this._columnConfig);
+    if (this.gridID === null) {
+      return;
     }
+
+    this.service.waitInitView(this.gridID!).subscribe(can => {
+      if (can) {
+        this.view = this.service.createDefaultView(this.gridID!, this.columnConfig, this.sort, this.filter);
+        this.service.waitInitView(this.gridID!).complete();
+      }
+    })
   }
 
   public resolveDefault<T>(value: T | undefined, defaultValue: T): T {
@@ -100,7 +133,7 @@ export class CommonGridComponent implements OnInit {
 
     const controls: { [key: string]: AbstractControl } = {};
 
-    this._columnConfig.forEach((column: GridColumn) =>
+    this.columnConfig.forEach((column: GridColumn) =>
       controls[column.alias] = new FormControl(event.dataItem[column.alias], column.validators)
     );
 
@@ -132,7 +165,7 @@ export class CommonGridComponent implements OnInit {
 
     const controls: { [key: string]: AbstractControl } = {};
 
-    this._columnConfig.forEach((column: GridColumn) => {
+    this.columnConfig.forEach((column: GridColumn) => {
       if (!column.hidden) {
         controls[column.alias] = new FormControl('', column.validators)
       }
@@ -152,22 +185,24 @@ export class CommonGridComponent implements OnInit {
     const columns = args.map(arg => arg.column);
 
     columns.forEach((column: any, index) => {
-      const needColumn = this._columnConfig.find(col => col.alias === column.field);
-      
+      const needColumn = this.columnConfig.find(col => col.alias === column.field);
+
       if (needColumn) {
         needColumn.width = newWidths[index];
       }
     });
 
-    this.service.updateCurrentView(this.gridID!, this.selectedView, this._columnConfig);
+    this.updateCurrentView();
   }
 
   public filterChange(filter: CompositeFilterDescriptor): void {
-    console.log('filterChange:', filter);
+    this.filter = filter;
+    this.updateCurrentView();
   }
 
   public sortChange(sort: SortDescriptor[]): void {
-    console.log('sortChange', sort);
+    this.sort = sort;
+    this.updateCurrentView();
   }
 
   public closeEditor(grid: GridComponent, rowIndex: number = this.editedRowIndex): void {
@@ -175,41 +210,31 @@ export class CommonGridComponent implements OnInit {
     this.editedRowIndex = -1;
   }
 
-  public viewSelectionChanged(view: string): void {
-    this.selectedView = view;
-    const loadedConfig = this.service.loadConfig(this.gridID!, view);
-
-    console.log('changed:', loadedConfig);
-
-    this._columnConfig = this._columnConfig.map((column, index) => {
-      const clonedColumn = {...column};
-      const newColumn = loadedConfig[index];
-
-      return {...clonedColumn, ...newColumn};
-    })
+  public viewSelectionChanged(viewName: string): void {
+    this.view = this.service.getView(this.gridID!, viewName);
   }
 
   public getViews(): string[] {
-    return this.service.getViews(this.gridID!);
+    return this.service.getViewsList(this.gridID!);
   }
 
   public createNewView(): void {
-    const { view, config } = this.service.createNewView(this.gridID!);
+    this.view = this.service.createView(this.gridID!);
+  }
 
-    this.selectedView = view;
-    this._columnConfig = this._columnConfig.map((column, index) => {
-      const clonedColumn = {...column};
-      const newColumn = config[index];
-
-      return {...clonedColumn, ...newColumn};
-    });
+  public viewCheckboxChanged(event: Event): void {
+    this.updateCurrentView();
   }
 
   public removeCurrentView(): void {
-    this.selectedView = this.service.removeView(this.gridID!, this.selectedView);
+    // this.selectedView = this.service.removeView(this.gridID!, this.selectedView);
   }
 
   public viewIsDefault(): boolean {
-    return this.selectedView === this.service.DEFAULT_KEY;
+    return this.view && this.view.name === this.service.DEFAULT_VIEW_NAME;
+  }
+
+  public updateCurrentView(): void {
+    this.view = this.service.updateView(this.gridID!, this.view.name, this.columnConfig, this.filter, this.sort);
   }
 }

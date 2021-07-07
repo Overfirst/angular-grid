@@ -3,6 +3,7 @@ import { AddEvent, PagerSettings, RemoveEvent, SaveEvent } from '@progress/kendo
 import { ColumnsConfig } from '../../interfaces';
 import { SortDescriptor } from '@progress/kendo-data-query';
 import { TemplateRef } from '@angular/core';
+import { ConfiguratorService } from '../common-grid/configurator.service';
 
 @Component({
   selector: 'app-common-table',
@@ -14,6 +15,8 @@ export class CommonTableComponent implements AfterViewInit {
   @ViewChild('booleanTemplate') public booleanTemplate: TemplateRef<HTMLElement>;
   @ViewChild('dateTemplate') public dateTemplate: TemplateRef<HTMLElement>;
   @ViewChild('listTemplate') public listTemplate: TemplateRef<HTMLElement>;
+
+  constructor(private service: ConfiguratorService) {}
 
   @Input() public gridHeight = 900;
   @Input() public pageSize = 20;
@@ -82,6 +85,10 @@ export class CommonTableComponent implements AfterViewInit {
           column.template = this.textTemplate;
       }
     });
+
+    if (this.gridID) {
+      this.service.canInitView(this.gridID)
+    }
   }
 
   public editHandler(event: SaveEvent): void {

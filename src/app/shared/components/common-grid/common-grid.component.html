@@ -1,15 +1,15 @@
 <kendo-grid
   [kendoGridBinding]="gridData"
-  [sortable]="sortable && !_loading && !configuratorOpened"
+  [sortable]="sortable && !loading && !configuratorOpened"
   [pageable]="pageable"
-  [filterable]="filterable && !_loading && !configuratorOpened"
+  [filterable]="filterable && !loading && !configuratorOpened"
   [groupable]="groupable"
   [reorderable]="reorderable"
   [resizable]="(resizable || configuratorOpened) && !viewIsDefault()"
   [height]="gridHeight"
-  [loading]="_loading"
+  [loading]="!!loading"
   [sort]="sort"
-  [filter]="defaultFilter"
+  [filter]="filter"
   [pageSize]="resolveDefault(pageSize, 5)"
 
   (edit)="editHandler($event)"
@@ -30,10 +30,10 @@
 
      <span *ngIf="gridID !== null">View: </span>
      <kendo-dropdownlist
-       *ngIf="gridID !== null"
-       [disabled]="_loading"
+       *ngIf="gridID !== null && view"
+       [disabled]="!!loading"
        [data]="getViews()"
-       [value]="selectedView"
+       [value]="view.name"
        (selectionChange)="viewSelectionChanged($event)"
      ></kendo-dropdownlist>
  
@@ -42,7 +42,7 @@
      <button
        *ngIf="allowConfigurator && gridID !== null"
        class="k-button"
-       [disabled]="_loading || nowEdits"
+       [disabled]="loading || nowEdits"
        (click)="configuratorOpened = !configuratorOpened"
      >
        <span *ngIf="!configuratorOpened; else apply" class="k-icon k-i-gear k-i-cog k-i-custom"></span>
@@ -56,7 +56,7 @@
  
      <button
        *ngIf="configuratorOpened"
-       [disabled]="_loading"
+       [disabled]="loading"
        class="k-button"
        (click)="createNewView()"
      >
@@ -68,7 +68,7 @@
  
      <button
        *ngIf="false"
-       [disabled]="_loading || viewIsDefault()"
+       [disabled]="loading || viewIsDefault()"
        class="k-button"
        (click)="removeCurrentView()"
      >
@@ -82,7 +82,7 @@
     
     <button
       kendoGridAddCommand
-      [disabled]="_loading || nowEdits || configuratorOpened"
+      [disabled]="loading || nowEdits || configuratorOpened"
     >
       <span class="k-icon k-i-plus"></span>
       <span>New row</span>
@@ -93,7 +93,7 @@
   <!-- Data columns -->
 
   <kendo-grid-column
-    *ngFor="let column of _columnConfig"
+    *ngFor="let column of columnConfig"
     [field]="column.alias"
     [autoSize]="false"
     [title]="resolveDefault(column.title, column.alias)"
@@ -122,8 +122,8 @@
               [disabled]="viewIsDefault()"
               kendoCheckBox
               type="checkbox"
-              value="1"
               [(ngModel)]="column.hidden"
+              (ngModelChange)="viewCheckboxChanged($event)"
             >
           </div>
         </div>
@@ -133,7 +133,7 @@
     <ng-template kendoGridToolbarTemplate>
       <button 
         kendoGridAddCommand
-        [disabled]="_loading || nowEdits"
+        [disabled]="loading || nowEdits"
       >
       <span class="k-icon k-i-plus"></span>
       <span>New row</span>
@@ -182,7 +182,7 @@
               [disabled]="viewIsDefault()"
               kendoCheckBox
               type="checkbox"
-              value="1"
+              (ngModelChange)="viewCheckboxChanged($event)"
             >
           </div>
         </div>
