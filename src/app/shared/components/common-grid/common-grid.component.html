@@ -5,7 +5,7 @@
   [filterable]="filterable && !loading && !configuratorOpened && !viewIsDefault()"
   [groupable]="groupable"
   [reorderable]="reorderable"
-  [resizable]="resizable && !viewIsDefault()"
+  [resizable]="!loading && resizable && !viewIsDefault()"
   [height]="gridHeight"
   [loading]="!!loading"
   [sort]="sort"
