@@ -1,11 +1,11 @@
 <kendo-grid
   [kendoGridBinding]="gridData"
-  [sortable]="sortable && !loading && !configuratorOpened"
+  [sortable]="sortable && !loading && !configuratorOpened && !viewIsDefault()"
   [pageable]="pageable"
-  [filterable]="filterable && !loading && !configuratorOpened"
+  [filterable]="filterable && !loading && !configuratorOpened && !viewIsDefault()"
   [groupable]="groupable"
   [reorderable]="reorderable"
-  [resizable]="(resizable || configuratorOpened) && !viewIsDefault()"
+  [resizable]="resizable && !viewIsDefault()"
   [height]="gridHeight"
   [loading]="!!loading"
   [sort]="sort"
@@ -28,7 +28,7 @@
   <ng-template kendoGridToolbarTemplate>
      <!-- Current view -->
 
-     <span *ngIf="gridID !== null">View: </span>
+     <span *ngIf="gridID !== null && view">View: </span>
      <kendo-dropdownlist
        *ngIf="gridID !== null && view"
        [disabled]="!!loading"
@@ -40,7 +40,7 @@
      <!-- View settings -->
  
      <button
-       *ngIf="allowConfigurator && gridID !== null"
+       *ngIf="allowConfigurator && gridID !== null && view"
        class="k-button"
        [disabled]="loading || nowEdits"
        (click)="configuratorOpened = !configuratorOpened"
