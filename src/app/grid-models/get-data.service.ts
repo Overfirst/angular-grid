@@ -10,7 +10,7 @@ export class GetDataService {
 
     public get(url: string): Observable<any[]> {
         return this.http.get<any[]>(url)
-            .pipe(switchMap(data => of(data).pipe(delay(0))))
+            .pipe(switchMap(data => of(data).pipe(delay(1000))))
     }
 
     public getColumnConfig(url: string): Observable<ColumnsConfig> {
