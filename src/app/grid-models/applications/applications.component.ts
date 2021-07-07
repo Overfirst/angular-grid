@@ -14,6 +14,8 @@ export class ApplicationsComponent implements OnInit {
   public applications$ = new BehaviorSubject<Application[]>([]);
   public loading$ = new BehaviorSubject<boolean>(false);
 
+  public readonly GRID_ID = 'APPLICATIONS';
+
   public columnConfig: ColumnsConfig = [
     { alias: 'name', title: 'Name' },
     { alias: 'arch', title: 'Architecture' },

@@ -16,6 +16,8 @@ export class ComputersComponent implements OnInit {
 
   public columnConfig$ = this.service.getColumnConfig();
 
+  public readonly GRID_ID = 'COMPUTERS';
+
   constructor(private service: ComputersService) {}
 
   public ngOnInit(): void {

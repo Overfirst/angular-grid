@@ -13,6 +13,8 @@ export class ProductsComponent implements OnInit {
   public products: Product[] = [];
   public products$ = new BehaviorSubject<Product[]>([]);
   public loading$ = new BehaviorSubject<boolean>(false);
+  
+  public readonly GRID_ID = 'PRODUCTS';
 
   public columnConfig: ColumnsConfig = [
     { alias: 'ProductID', title: 'Product ID' },
