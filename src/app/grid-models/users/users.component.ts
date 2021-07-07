@@ -2,7 +2,7 @@ import { Component, ChangeDetectionStrategy, ViewChild, TemplateRef, OnInit, Aft
 import { Validators } from '@angular/forms';
 import { AddEvent, RemoveEvent, SaveEvent } from '@progress/kendo-angular-grid';
 import { BehaviorSubject } from 'rxjs';
-import { ColumnsConfig, GridColumn, User } from 'src/app/shared/interfaces'
+import { ColumnsConfig, User } from 'src/app/shared/interfaces'
 import { UsersService } from './users.service';
 
 @Component({
