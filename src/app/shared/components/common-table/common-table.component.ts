@@ -1,6 +1,6 @@
 import { Component, ChangeDetectionStrategy, ViewChild, Input, Output, EventEmitter, AfterViewInit } from '@angular/core';
 import { AddEvent, PagerSettings, RemoveEvent, SaveEvent } from '@progress/kendo-angular-grid';
-import { GridColumn } from '../../interfaces';
+import { ColumnsConfig } from '../../interfaces';
 import { SortDescriptor } from '@progress/kendo-data-query';
 import { TemplateRef } from '@angular/core';
 
@@ -32,9 +32,9 @@ export class CommonTableComponent implements AfterViewInit {
   @Input() public allowConfigurator = true;
   @Input() public gridID: string | null = null;
 
-  public _columnConfig: GridColumn[] = [];
+  public _columnConfig: ColumnsConfig = [];
 
-  @Input() public set columnConfig(config: GridColumn[] | null) {
+  @Input() public set columnConfig(config: ColumnsConfig | null) {
     if (config) {
       this._columnConfig = config;
       this.setColumnConfigTemplate();

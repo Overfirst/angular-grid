@@ -1,5 +1,6 @@
 import { TemplateRef } from '@angular/core';
 import { ValidatorFn } from '@angular/forms';
+import { CompositeFilterDescriptor, SortDescriptor } from '@progress/kendo-data-query';
 import { Observable } from 'rxjs';
 
 export interface User {
@@ -54,6 +55,9 @@ export interface GridColumn extends GridColumnSimple {
   validators?: ValidatorFn[];
 }
 
+export type ColumnsConfig = GridColumn[];
+export type ColumnsSimpleConfig = GridColumnSimple[];
+
 export interface AzureHttpResponse {
   '@odata.context'?: string;
   '@odata.count'?: number;
@@ -62,5 +66,11 @@ export interface AzureHttpResponse {
 
 export interface GridViewPair {
   view: string;
-  config: GridColumnSimple[];
+  config: ColumnsSimpleConfig;
+}
+
+export interface GridView {
+  config: ColumnsSimpleConfig;
+  filter: CompositeFilterDescriptor;
+  sort: SortDescriptor[];
 }

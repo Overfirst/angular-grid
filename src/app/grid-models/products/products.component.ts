@@ -1,7 +1,7 @@
 import { Component, ChangeDetectionStrategy, OnInit } from '@angular/core';
 import { AddEvent, RemoveEvent, SaveEvent } from '@progress/kendo-angular-grid';
 import { BehaviorSubject } from 'rxjs';
-import { GridColumn, Product } from 'src/app/shared/interfaces'
+import { ColumnsConfig, Product } from 'src/app/shared/interfaces'
 import { ProductsService } from './products.service';
 
 @Component({
@@ -14,7 +14,7 @@ export class ProductsComponent implements OnInit {
   public products$ = new BehaviorSubject<Product[]>([]);
   public loading$ = new BehaviorSubject<boolean>(false);
 
-  public columnConfig: GridColumn[] = [
+  public columnConfig: ColumnsConfig = [
     { alias: 'ProductID', title: 'Product ID' },
     { alias: 'ProductName', title: 'Product name' },
     { alias: 'UnitPrice', title: 'Unit price' },

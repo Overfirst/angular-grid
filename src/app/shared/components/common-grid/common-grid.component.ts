@@ -1,6 +1,6 @@
-import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter, OnInit, ViewChild, TemplateRef, AfterViewInit } from '@angular/core';
+import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter, OnInit,  } from '@angular/core';
 import { AddEvent, CancelEvent, ColumnResizeArgs, EditEvent, GridComponent, PagerSettings, RemoveEvent, SaveEvent } from '@progress/kendo-angular-grid';
-import { GridColumn } from 'src/app/shared/interfaces';
+import { ColumnsConfig, GridColumn } from 'src/app/shared/interfaces';
 import { CompositeFilterDescriptor, SortDescriptor } from '@progress/kendo-data-query';
 import { Observable, of } from 'rxjs';
 import { AbstractControl, FormControl, FormGroup, Validators } from '@angular/forms';
@@ -16,7 +16,7 @@ export class CommonGridComponent implements OnInit {
   public gridData: any[];
 
   public _loading = false;
-  public _columnConfig: GridColumn[] = [];
+  public _columnConfig: ColumnsConfig = [];
   public selectedView = this.service.DEFAULT_KEY;
 
   public defaultFilter: CompositeFilterDescriptor = {
@@ -49,7 +49,7 @@ export class CommonGridComponent implements OnInit {
   @Input() public pageable: boolean | PagerSettings = true;
   @Input() public gridID: string | null = null;
 
-  @Input() public set columnConfig(config: GridColumn[]) {
+  @Input() public set columnConfig(config: ColumnsConfig) {
     this._columnConfig = config;
 
     this._columnConfig.forEach(column => {
@@ -160,6 +160,14 @@ export class CommonGridComponent implements OnInit {
     });
 
     this.service.updateCurrentView(this.gridID!, this.selectedView, this._columnConfig);
+  }
+
+  public filterChange(filter: CompositeFilterDescriptor): void {
+    console.log('filterChange:', filter);
+  }
+
+  public sortChange(sort: SortDescriptor[]): void {
+    console.log('sortChange', sort);
   }
 
   public closeEditor(grid: GridComponent, rowIndex: number = this.editedRowIndex): void {

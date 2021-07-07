@@ -2,7 +2,7 @@ import { Component, ChangeDetectionStrategy, ViewChild, TemplateRef, OnInit, Aft
 import { Validators } from '@angular/forms';
 import { AddEvent, RemoveEvent, SaveEvent } from '@progress/kendo-angular-grid';
 import { BehaviorSubject } from 'rxjs';
-import { GridColumn, User } from 'src/app/shared/interfaces'
+import { ColumnsConfig, GridColumn, User } from 'src/app/shared/interfaces'
 import { UsersService } from './users.service';
 
 @Component({
@@ -14,7 +14,7 @@ export class UsersComponent implements OnInit, AfterViewInit {
   @ViewChild('ratingTemplate') ratingTemplate: TemplateRef<HTMLElement>; 
   public readonly GRID_ID = 'USERS';
 
-  public columnConfig: GridColumn[] = [
+  public columnConfig: ColumnsConfig = [
     { alias: 'name', title: 'Name' },
     { alias: 'surname', title: 'Surname' },
     {

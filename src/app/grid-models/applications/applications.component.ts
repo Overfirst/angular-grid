@@ -1,7 +1,7 @@
 import { Component, ChangeDetectionStrategy, OnInit } from '@angular/core';
 import { AddEvent, RemoveEvent, SaveEvent } from '@progress/kendo-angular-grid';
 import { BehaviorSubject } from 'rxjs';
-import { Application, GridColumn } from 'src/app/shared/interfaces'
+import { Application, ColumnsConfig } from 'src/app/shared/interfaces'
 import { ApplicationsService } from './applications.service';
 
 @Component({
@@ -14,7 +14,7 @@ export class ApplicationsComponent implements OnInit {
   public applications$ = new BehaviorSubject<Application[]>([]);
   public loading$ = new BehaviorSubject<boolean>(false);
 
-  public columnConfig: GridColumn[] = [
+  public columnConfig: ColumnsConfig = [
     { alias: 'name', title: 'Name' },
     { alias: 'arch', title: 'Architecture' },
     { alias: 'vendor', title: 'Vendor' },

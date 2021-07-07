@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Computer, GridColumn } from 'src/app/shared/interfaces';
+import { ColumnsConfig, Computer } from 'src/app/shared/interfaces';
 import { GetDataService } from '../get-data.service';
 
 @Injectable({providedIn: 'root'})
@@ -14,7 +14,7 @@ export class ComputersService {
         return this.getDataService.get(this.DATA_URL);
     }
 
-    public getColumnConfig(): Observable<GridColumn[]> {
+    public getColumnConfig(): Observable<ColumnsConfig> {
         return this.getDataService.getColumnConfig(this.CONFIG_URL);
     }
 }

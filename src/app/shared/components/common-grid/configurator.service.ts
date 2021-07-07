@@ -1,10 +1,10 @@
 import { Injectable } from "@angular/core";
-import { GridColumn, GridColumnSimple, GridViewPair } from "../../interfaces";
+import { ColumnsConfig, ColumnsSimpleConfig, GridViewPair } from "../../interfaces";
 
 @Injectable({providedIn: 'root'})
 export class ConfiguratorService {
   public views: { [key: string]: string[] } = {};
-  public configs: { [key: string]: { [key: string]: GridColumnSimple[] } } = {};
+  public configs: { [key: string]: { [key: string]: ColumnsSimpleConfig } } = {};
 
   private readonly VIEWS_KEY = 'GRID_VIEWS';
   private readonly CONFIGS_KEY = 'GRID_CONFIGS';
@@ -22,11 +22,11 @@ export class ConfiguratorService {
     this.updateStorage();
   }
 
-  public loadConfig(gridID: string, item: string): GridColumnSimple[] {
+  public loadConfig(gridID: string, item: string): ColumnsSimpleConfig {
     return this.configs[gridID][item];
   }
 
-  public setDefaultConfig(gridID: string, config: GridColumn[]): void {
+  public setDefaultConfig(gridID: string, config: ColumnsConfig): void {
     if (!this.views[gridID]) {
       this.views[gridID] = [];
     }
@@ -52,7 +52,7 @@ export class ConfiguratorService {
 
     this.views[gridID].push(viewName);
     const defaultConfig = this.configs[gridID][this.DEFAULT_KEY];
-    const newConfig: GridColumnSimple[] = [...defaultConfig];
+    const newConfig: ColumnsSimpleConfig = [...defaultConfig];
     
     this.configs[gridID][viewName] = newConfig;
     this.updateStorage();    
@@ -68,7 +68,7 @@ export class ConfiguratorService {
     return this.DEFAULT_KEY;
   }
 
-  public updateCurrentView(gridID: string, view: string, config: GridColumn[]): void {
+  public updateCurrentView(gridID: string, view: string, config: ColumnsConfig): void {
     this.configs[gridID][view] = this.toSimpleConfig(config)
     this.updateStorage();
   }
@@ -78,7 +78,7 @@ export class ConfiguratorService {
     localStorage.setItem(this.CONFIGS_KEY, JSON.stringify(this.configs));
   }
 
-  private toSimpleConfig(config: GridColumn[]): GridColumnSimple[] {
+  private toSimpleConfig(config: ColumnsConfig): ColumnsSimpleConfig {
     const simpleConfig = config.map(col => {
       const simpleCol = {
         alias: col.alias,

@@ -1,6 +1,6 @@
 import { Component, ChangeDetectionStrategy, Output, EventEmitter, Input } from '@angular/core';
-import { AbstractControl, FormControl, FormGroup, Validators } from '@angular/forms';
-import { GridColumn } from '../../interfaces';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { ColumnsConfig, GridColumn } from '../../interfaces';
 
 @Component({
   selector: 'app-common-grid-configurator',
@@ -9,10 +9,10 @@ import { GridColumn } from '../../interfaces';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CommonGridConfiguratorComponent {
-  public _columnConfig: GridColumn[];
+  public _columnConfig: ColumnsConfig;
   public form: FormGroup;
 
-  @Input() public set columnConfig(config: GridColumn[]) {
+  @Input() public set columnConfig(config: ColumnsConfig) {
     this._columnConfig = config;
     
     const controls: { [key: string]: FormControl } = {};
