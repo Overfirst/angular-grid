@@ -6,23 +6,33 @@ import { ColumnsConfig, ColumnsSimpleConfig, GridColumnSimple, GridView } from "
 @Injectable({providedIn: 'root'})
 export class ConfiguratorService {
   private views: { [key: string]: GridView[] } = {};
-  private obs: { [key: string]: BehaviorSubject<boolean>; } = {};
+  private obs: { [key: string]: BehaviorSubject<boolean> } = {};
+  private selectedViews: { [key: string]: string } = {}
 
   private readonly VIEWS_KEY = 'GRID_VIEWS';
+  private readonly SELECTED_VIEWS_KEY = 'GRID_SELECTED_VIEWS';
   public readonly DEFAULT_VIEW_NAME = 'Default';
 
   constructor() {
-    const views = localStorage.getItem(this.VIEWS_KEY);
+    function parse(key: string): any {
+      const json = localStorage.getItem(key);
+      let obj = {};
 
-    if (!views) {
-      return;
+      if (!json) {
+        return obj;
+      }
+  
+      try {
+        obj = JSON.parse(json);
+      } catch (error) {
+        obj = {};
+      }
+
+      return obj;
     }
 
-    try {
-      this.views = JSON.parse(views);
-    } catch (error) {
-      this.views = {};
-    }
+    this.views = parse(this.VIEWS_KEY);
+    this.selectedViews = parse(this.SELECTED_VIEWS_KEY);
   }
   
   public createDefaultView(gridID: string, config: ColumnsConfig, sort: SortDescriptor[], filter: CompositeFilterDescriptor): GridView {
@@ -68,6 +78,9 @@ export class ConfiguratorService {
   }
 
   public getView(gridID: string, viewName: string): GridView {
+    this.selectedViews[gridID] = viewName;
+    this.saveSelectedView();
+
     return this.views[gridID].find(view => view.name === viewName)!;
   }
 
@@ -119,7 +132,16 @@ export class ConfiguratorService {
     return this.obs[gridID];
   }
 
+  public getSelectedView(gridID: string): string {
+    return this.selectedViews[gridID] || '';
+  }
+
   private updateStorage(): void {
+    this.saveSelectedView();
     localStorage.setItem(this.VIEWS_KEY, JSON.stringify(this.views));
+  }
+
+  private saveSelectedView(): void {
+    localStorage.setItem(this.SELECTED_VIEWS_KEY, JSON.stringify(this.selectedViews));
   }
 }

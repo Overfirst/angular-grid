@@ -109,6 +109,11 @@ export class CommonGridComponent implements OnInit, OnDestroy {
     this.service.waitInitView(this.gridID!).subscribe(can => {
       if (can) {
         this.view = this.service.createDefaultView(this.gridID!, this.columnConfig, this.sort, this.filter);
+
+        const selectedView = this.service.getSelectedView(this.gridID!);
+        if (selectedView) {
+          this.view = this.service.getView(this.gridID!, selectedView);
+        }
       }
     })
   }
