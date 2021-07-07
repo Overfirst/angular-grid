@@ -69,6 +69,8 @@ export class ConfiguratorService {
     }
 
     this.views[gridID].push(view);
+    this.selectedViews[gridID] = view.name;
+    
     this.updateStorage();
     return view;
   }
