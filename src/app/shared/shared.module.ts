@@ -14,7 +14,6 @@ import { InputsModule } from '@progress/kendo-angular-inputs';
 
 import { RatingComponent } from './components/rating/rating.component';
 import { DropDownListFilterComponent } from './components/dropdown-filter/dropdown-filter.component';
-import { CommonGridConfiguratorComponent } from './components/common-grid-configurator/common-grid-configurator.component';
 
 @NgModule({
     imports: [
@@ -30,8 +29,7 @@ import { CommonGridConfiguratorComponent } from './components/common-grid-config
     ],
     declarations: [
       RatingComponent,
-      DropDownListFilterComponent,
-      CommonGridConfiguratorComponent
+      DropDownListFilterComponent
     ],
     exports: [
         CommonModule,
@@ -44,8 +42,7 @@ import { CommonGridConfiguratorComponent } from './components/common-grid-config
         ReactiveFormsModule,
         DropDownListModule,
         RatingComponent,
-        DropDownListFilterComponent,
-        CommonGridConfiguratorComponent
+        DropDownListFilterComponent
     ]
 })
 export class SharedModule {}
