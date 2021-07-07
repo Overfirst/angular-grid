@@ -167,30 +167,7 @@
     [width]="200"
   >
     <ng-template kendoGridHeaderTemplate>
-      <div class="header_box">
         <div>Commands</div>
-
-        <div class="configurator_box" *ngIf="configuratorOpened">
-          <div class="section">
-            <span>Locked</span>
-            <input
-              [disabled]="viewIsDefault()"
-              kendoCheckBox
-              type="checkbox"
-            >
-          </div>
-  
-          <div class="section">
-            <span>Hidden</span>
-            <input
-              [disabled]="viewIsDefault()"
-              kendoCheckBox
-              type="checkbox"
-              (ngModelChange)="viewCheckboxChanged($event)"
-            >
-          </div>
-        </div>
-      </div>
     </ng-template>
 
     <ng-template kendoGridCellTemplate let-isNew="isNew">
