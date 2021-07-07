@@ -63,6 +63,10 @@ export class CommonTableComponent implements AfterViewInit {
 
   public ngAfterViewInit(): void {
     this.setColumnConfigTemplate();
+    
+    if (this.gridID) {
+      this.service.canInitView(this.gridID)
+    }
   }
 
   public setColumnConfigTemplate(): void {
@@ -85,10 +89,6 @@ export class CommonTableComponent implements AfterViewInit {
           column.template = this.textTemplate;
       }
     });
-
-    if (this.gridID) {
-      this.service.canInitView(this.gridID)
-    }
   }
 
   public editHandler(event: SaveEvent): void {

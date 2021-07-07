@@ -113,8 +113,8 @@ export class ConfiguratorService {
     return simpleConfig;
   }
 
-  public canInitView(gridID: string): void {
-    this.obs[gridID].next(true);
+  public canInitView(gridID: string, can = true): void {
+    this.obs[gridID].next(can);
   }
 
   public waitInitView(gridID: string): BehaviorSubject<boolean> {

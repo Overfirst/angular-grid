@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter, OnInit } from '@angular/core';
+import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter, OnInit, OnDestroy } from '@angular/core';
 import { AddEvent, CancelEvent, ColumnResizeArgs, EditEvent, GridComponent, PagerSettings, RemoveEvent, SaveEvent } from '@progress/kendo-angular-grid';
 import { ColumnsConfig, GridColumn, GridView } from 'src/app/shared/interfaces';
 import { CompositeFilterDescriptor, SortDescriptor } from '@progress/kendo-data-query';
@@ -12,7 +12,7 @@ import { ConfiguratorService } from './configurator.service';
   styleUrls: ['./common-grid.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class CommonGridComponent implements OnInit {
+export class CommonGridComponent implements OnInit, OnDestroy {
   private _loading = false;
   private _columnConfig: ColumnsConfig = [];
   private _view: GridView;
@@ -109,9 +109,14 @@ export class CommonGridComponent implements OnInit {
     this.service.waitInitView(this.gridID!).subscribe(can => {
       if (can) {
         this.view = this.service.createDefaultView(this.gridID!, this.columnConfig, this.sort, this.filter);
-        this.service.waitInitView(this.gridID!).complete();
       }
     })
+  }
+
+  public ngOnDestroy(): void {
+    if (this.gridID) {
+      this.service.canInitView(this.gridID, false)
+    }
   }
 
   public resolveDefault<T>(value: T | undefined, defaultValue: T): T {
