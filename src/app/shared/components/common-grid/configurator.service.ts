@@ -20,9 +20,7 @@ export class ConfiguratorService {
 
     try {
       this.views = JSON.parse(views);
-      console.log('Configurator views parse error successfully');
     } catch (error) {
-      console.log('Configurator views parse error:', error);
       this.views = {};
     }
   }
@@ -61,7 +59,6 @@ export class ConfiguratorService {
     }
 
     this.views[gridID].push(view);
-    console.log('createNewView:', view);
     this.updateStorage();
     return view;
   }
@@ -71,9 +68,7 @@ export class ConfiguratorService {
   }
 
   public getView(gridID: string, viewName: string): GridView {
-    const view = this.views[gridID].find(view => view.name === viewName)!;
-    console.log('viewSelectionChanged:', view);
-    return view;
+    return this.views[gridID].find(view => view.name === viewName)!;
   }
 
   public updateView(gridID: string, viewName: string, config: ColumnsConfig, filter: CompositeFilterDescriptor, sort: SortDescriptor[]): GridView {
@@ -92,7 +87,6 @@ export class ConfiguratorService {
 
     this.views[gridID][targetIndex] = updatedView;
     this.updateStorage();
-    console.log('updateView:', updatedView);
     return updatedView;
   }
 
@@ -126,7 +120,6 @@ export class ConfiguratorService {
   }
 
   private updateStorage(): void {
-    console.log('updateStorage...', this.views);
     localStorage.setItem(this.VIEWS_KEY, JSON.stringify(this.views));
   }
 }
