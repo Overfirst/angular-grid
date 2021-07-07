@@ -13,16 +13,21 @@ import { ConfiguratorService } from './configurator.service';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CommonGridComponent implements OnInit {
-  public gridData: any[];
-
   private _loading = false;
   private _columnConfig: ColumnsConfig = [];
   private _view: GridView;
 
+  public gridData: any[];
+
+  public formGroup: FormGroup;
+  public configuratorOpened = false;
+  public nowEdits = false;
+  public editedRowIndex = 0;
+
   public set view(view: GridView) {
     this._view = view;
     this.columnConfig = this.columnConfig.map((col, idx) => ({...col, ...view.config[idx]}));
-    this.filter = view.filter!;
+    this.filter = view.filter;
     this.sort = view.sort;
   }
 
@@ -30,10 +35,13 @@ export class CommonGridComponent implements OnInit {
     return this._view;
   }
 
-  public formGroup: FormGroup;
-  public configuratorOpened = false;
-  public nowEdits = false;
-  public editedRowIndex = 0;
+  public get columnConfig() {
+    return this._columnConfig;
+  }
+
+  public get loading() {
+    return this._loading;
+  }
 
   constructor(public service: ConfiguratorService) {}
 
@@ -77,16 +85,6 @@ export class CommonGridComponent implements OnInit {
       column.hidden = this.resolveDefault(column.hidden, false);
       column.locked = this.resolveDefault(column.locked, false);
     });
-
-    console.log('columnConfig set:', this.columnConfig);
-  }
-
-  public get columnConfig() {
-    return this._columnConfig;
-  }
-
-  public get loading() {
-    return this._loading;
   }
 
   @Input() public set loading(isLoading: boolean | null) {
