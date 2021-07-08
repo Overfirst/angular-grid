@@ -1,7 +1,7 @@
 <kendo-grid
   [kendoGridBinding]="gridData"
   [sortable]="sortable && !loading && !configuratorOpened && !viewIsDefault()"
-  [pageable]="pageable"
+  [pageable]="!loading && pageable"
   [filterable]="filterable && !loading && !configuratorOpened && !viewIsDefault()"
   [groupable]="groupable"
   [reorderable]="reorderable"
