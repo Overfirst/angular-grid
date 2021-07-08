@@ -100,6 +100,7 @@
     [title]="resolveDefault(column.title, column.alias)"
     [width]="resolveDefault(column.width, 300)"
     [hidden]="configuratorOpened ? false : resolveDefault(column.hidden, false)"
+    [locked]="resolveDefault(column.locked, false)"
     [filterable]="resolveDefault(column.filterable, true)"
     [filter]="resolveDefault(column.filter, 'text')"
   >
@@ -114,6 +115,8 @@
               [disabled]="viewIsDefault()"
               kendoCheckBox
               type="checkbox"
+              [(ngModel)]="column.locked"
+              (ngModelChange)="viewCheckboxChanged($event)"
             >
           </div>
   

@@ -114,6 +114,7 @@ export class ConfiguratorService {
       if (col.title) { simpleCol.title = col.title; }
       if (col.width) { simpleCol.width = col.width; }
       if (col.hidden !== undefined) { simpleCol.hidden = col.hidden; }
+      if (col.locked !== undefined) { simpleCol.locked = col.locked; }
       if (col.type) { simpleCol.type = col.type; }
       if (col.filter) { simpleCol.filter = col.filter; }
       if (col.filterable) { simpleCol.filterable = col.filterable; }
