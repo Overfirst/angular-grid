@@ -105,6 +105,7 @@
     [filterable]="resolveDefault(column.filterable, true)"
     [filter]="resolveDefault(column.filter, 'text')"
     [resizable]="!column.locked"
+    [style]="{ 'opacity': column.hidden ? '0.4': '1' }"
   >
     <ng-template kendoGridHeaderTemplate>
       <div class="header_box">
