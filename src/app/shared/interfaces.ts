@@ -75,4 +75,5 @@ export interface GridView {
   config: ColumnsSimpleConfig;
   filter: CompositeFilterDescriptor;
   sort: SortDescriptor[];
+  pageSize: number;
 }

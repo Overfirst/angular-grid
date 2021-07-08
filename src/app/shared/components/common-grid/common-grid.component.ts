@@ -1,5 +1,5 @@
 import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter, OnInit, OnDestroy } from '@angular/core';
-import { AddEvent, CancelEvent, ColumnResizeArgs, EditEvent, GridComponent, PagerSettings, RemoveEvent, SaveEvent } from '@progress/kendo-angular-grid';
+import { AddEvent, CancelEvent, ColumnResizeArgs, EditEvent, GridComponent, PageChangeEvent, PagerSettings, RemoveEvent, SaveEvent } from '@progress/kendo-angular-grid';
 import { ColumnsConfig, GridColumn, GridView } from 'src/app/shared/interfaces';
 import { CompositeFilterDescriptor, SortDescriptor } from '@progress/kendo-data-query';
 import { Observable, of } from 'rxjs';
@@ -29,6 +29,7 @@ export class CommonGridComponent implements OnInit, OnDestroy {
     this.columnConfig = this.columnConfig.map((col, idx) => ({...col, ...view.config[idx]}));
     this.filter = view.filter;
     this.sort = view.sort;
+    this.pageSize = view.pageSize;
   }
 
   public get view() {
@@ -112,7 +113,8 @@ export class CommonGridComponent implements OnInit, OnDestroy {
           name: this.service.DEFAULT_VIEW_NAME,
           config: this.columnConfig,
           sort: this.sort,
-          filter: this.filter
+          filter: this.filter,
+          pageSize: this.pageSize
         });
 
         const selectedView = this.service.getSelectedView(this.gridID!);
@@ -218,6 +220,11 @@ export class CommonGridComponent implements OnInit, OnDestroy {
     this.updateCurrentView();
   }
 
+  public pageChange(event: PageChangeEvent): void {
+    this.pageSize = event.take;
+    this.updateCurrentView();
+  }
+
   public closeEditor(grid: GridComponent, rowIndex: number = this.editedRowIndex): void {
     grid.closeRow(rowIndex);
     this.editedRowIndex = -1;
@@ -252,7 +259,8 @@ export class CommonGridComponent implements OnInit, OnDestroy {
       name: this.view.name,
       config: this.columnConfig,
       filter: this.filter,
-      sort: this.sort
+      sort: this.sort,
+      pageSize: this.pageSize
     });
   }
 }

@@ -42,7 +42,8 @@ export class ConfiguratorService {
         logic: defaultView.filter.logic,
         filters: [...defaultView.filter.filters]
       },
-      sort: [...defaultView.sort]
+      sort: [...defaultView.sort],
+      pageSize: defaultView.pageSize
     }
 
     if (!this.views[gridID]) {
@@ -64,7 +65,8 @@ export class ConfiguratorService {
         logic: defaultView.filter.logic,
         filters: [...defaultView.filter.filters]
       },
-      sort: [...defaultView.sort]
+      sort: [...defaultView.sort],
+      pageSize: defaultView.pageSize
     }
 
     this.views[gridID].push(view);
@@ -96,7 +98,8 @@ export class ConfiguratorService {
         logic: currentView.filter.logic,
         filters: [...currentView.filter.filters]
       },
-      sort: [...currentView.sort]
+      sort: [...currentView.sort],
+      pageSize: currentView.pageSize
     }
 
     this.views[gridID][targetIndex] = updatedView;
