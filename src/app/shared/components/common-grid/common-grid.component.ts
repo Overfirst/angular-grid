@@ -1,5 +1,5 @@
 import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter, OnInit, OnDestroy } from '@angular/core';
-import { AddEvent, CancelEvent, ColumnResizeArgs, EditEvent, GridComponent, PageChangeEvent, PagerSettings, RemoveEvent, SaveEvent } from '@progress/kendo-angular-grid';
+import { AddEvent, CancelEvent, ColumnReorderEvent, ColumnResizeArgs, EditEvent, GridComponent, PageChangeEvent, PagerSettings, RemoveEvent, SaveEvent } from '@progress/kendo-angular-grid';
 import { ColumnsConfig, GridColumn, GridView } from 'src/app/shared/interfaces';
 import { CompositeFilterDescriptor, SortDescriptor } from '@progress/kendo-data-query';
 import { Observable, of } from 'rxjs';
@@ -222,6 +222,18 @@ export class CommonGridComponent implements OnInit, OnDestroy {
 
   public pageChange(event: PageChangeEvent): void {
     this.pageSize = event.take;
+    this.updateCurrentView();
+  }
+
+  public columnReorder(event: ColumnReorderEvent): any {
+    const newIdx = event.newIndex;
+    const oldIdx = event.oldIndex;
+    
+    const column = this.columnConfig[oldIdx];
+
+    this.columnConfig.splice(oldIdx, 1);
+    this.columnConfig.splice(oldIdx < newIdx ? newIdx + 1 : newIdx, 0, column);
+
     this.updateCurrentView();
   }
 

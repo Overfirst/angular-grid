@@ -4,7 +4,7 @@
   [pageable]="!loading && pageable"
   [filterable]="filterable && !loading && !configuratorOpened && !viewIsDefault()"
   [groupable]="groupable"
-  [reorderable]="reorderable"
+  [reorderable]="reorderable && !viewIsDefault()"
   [resizable]="!loading && resizable && !viewIsDefault()"
   [height]="gridHeight"
   [loading]="!!loading"
@@ -22,6 +22,7 @@
   (filterChange)="filterChange($event)"
   (sortChange)="sortChange($event)"
   (pageChange)="pageChange($event)"
+  (columnReorder)="columnReorder($event)"
 >
 
   <!-- Toolbar buttons: New row & Configurator -->
@@ -103,6 +104,7 @@
     [locked]="resolveDefault(column.locked, false)"
     [filterable]="resolveDefault(column.filterable, true)"
     [filter]="resolveDefault(column.filter, 'text')"
+    [resizable]="!column.locked"
   >
     <ng-template kendoGridHeaderTemplate>
       <div class="header_box">
@@ -169,6 +171,7 @@
     *ngIf="editable || removable"
     title="Commands"
     [width]="200"
+    [reorderable]="false"
   >
     <ng-template kendoGridHeaderTemplate>
         <div>Commands</div>
