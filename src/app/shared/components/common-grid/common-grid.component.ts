@@ -108,7 +108,12 @@ export class CommonGridComponent implements OnInit, OnDestroy {
 
     this.service.waitInitView(this.gridID!).subscribe(can => {
       if (can) {
-        this.view = this.service.createDefaultView(this.gridID!, this.columnConfig, this.sort, this.filter);
+        this.view = this.service.createDefaultView(this.gridID!, {
+          name: this.service.DEFAULT_VIEW_NAME,
+          config: this.columnConfig,
+          sort: this.sort,
+          filter: this.filter
+        });
 
         const selectedView = this.service.getSelectedView(this.gridID!);
         if (selectedView) {
@@ -243,6 +248,11 @@ export class CommonGridComponent implements OnInit, OnDestroy {
   }
 
   public updateCurrentView(): void {
-    this.view = this.service.updateView(this.gridID!, this.view.name, this.columnConfig, this.filter, this.sort);
+    this.view = this.service.updateView(this.gridID!, {
+      name: this.view.name,
+      config: this.columnConfig,
+      filter: this.filter,
+      sort: this.sort
+    });
   }
 }

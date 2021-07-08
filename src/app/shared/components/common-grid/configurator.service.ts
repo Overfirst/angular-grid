@@ -1,5 +1,4 @@
 import { Injectable } from "@angular/core";
-import { CompositeFilterDescriptor, SortDescriptor } from "@progress/kendo-data-query";
 import { BehaviorSubject } from "rxjs";
 import { ColumnsConfig, ColumnsSimpleConfig, GridColumnSimple, GridView } from "../../interfaces";
 
@@ -35,15 +34,15 @@ export class ConfiguratorService {
     this.selectedViews = parse(this.SELECTED_VIEWS_KEY);
   }
   
-  public createDefaultView(gridID: string, config: ColumnsConfig, sort: SortDescriptor[], filter: CompositeFilterDescriptor): GridView {
+  public createDefaultView(gridID: string, defaultView: GridView): GridView {
     const view: GridView = {
-      name: this.DEFAULT_VIEW_NAME,
-      config: this.simplifyConfig(config),
+      name: defaultView.name,
+      config: this.simplifyConfig(defaultView.config),
       filter: {
-        logic: filter.logic,
-        filters: [...filter.filters]
+        logic: defaultView.filter.logic,
+        filters: [...defaultView.filter.filters]
       },
-      sort: [...sort]
+      sort: [...defaultView.sort]
     }
 
     if (!this.views[gridID]) {
@@ -86,18 +85,18 @@ export class ConfiguratorService {
     return this.views[gridID].find(view => view.name === viewName)!;
   }
 
-  public updateView(gridID: string, viewName: string, config: ColumnsConfig, filter: CompositeFilterDescriptor, sort: SortDescriptor[]): GridView {
-    const targetIndex = this.views[gridID].findIndex(view => view.name === viewName);
+  public updateView(gridID: string, currentView: GridView): GridView {
+    const targetIndex = this.views[gridID].findIndex(view => view.name === currentView.name);
     const targetView = this.views[gridID][targetIndex];
 
     const updatedView = {
       name: targetView.name,
-      config: this.simplifyConfig(config),
+      config: this.simplifyConfig(currentView.config),
       filter: {
-        logic: filter.logic,
-        filters: [...filter.filters]
+        logic: currentView.filter.logic,
+        filters: [...currentView.filter.filters]
       },
-      sort: [...sort]
+      sort: [...currentView.sort]
     }
 
     this.views[gridID][targetIndex] = updatedView;
